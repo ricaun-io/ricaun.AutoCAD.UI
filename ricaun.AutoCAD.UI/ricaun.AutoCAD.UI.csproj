@@ -94,7 +94,7 @@
 
   <PropertyGroup>
     <AssemblyName>$(PackageId)$(PackageAssemblyVersion)</AssemblyName>
-    <Description>Revit Package $(PackageId).</Description>
+    <Description>AutoCAD Package $(PackageId).</Description>
     <Product>$(PackageId)</Product>
     <Copyright>Copyright © $(CopyrightYears) $(Company)</Copyright>
   </PropertyGroup>
