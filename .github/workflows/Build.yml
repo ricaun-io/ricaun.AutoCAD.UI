@@ -25,3 +25,5 @@ jobs:
           SignFile: ${{ secrets.SIGN_FILE }}
           SignPassword: ${{ secrets.SIGN_PASSWORD }}
           InstallationFiles: ${{ secrets.INSTALLATION_FILES }}
+          NugetApiUrl: ${{ secrets.NUGET_API_URL }}
+          NugetApiKey: ${{ secrets.NUGET_API_KEY }}
