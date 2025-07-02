@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36121.58 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{F0F5926E-CAE6-47E7-AFB8-42D91D6B1284}"
+	ProjectSection(SolutionItems) = preProject
+		CHANGELOG.md = CHANGELOG.md
+		Directory.Build.props = Directory.Build.props
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ricaun.AutoCAD.UI", "ricaun.AutoCAD.UI\ricaun.AutoCAD.UI.csproj", "{77755995-F69C-42C0-9A3E-1193C820DD4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{E54E7E6C-CB6D-440D-BED9-35B2D49FE4EC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77755995-F69C-42C0-9A3E-1193C820DD4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77755995-F69C-42C0-9A3E-1193C820DD4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77755995-F69C-42C0-9A3E-1193C820DD4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77755995-F69C-42C0-9A3E-1193C820DD4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E54E7E6C-CB6D-440D-BED9-35B2D49FE4EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E54E7E6C-CB6D-440D-BED9-35B2D49FE4EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D1A9579-0190-4FA8-955D-1E159544CCD3}
+	EndGlobalSection
+EndGlobal
