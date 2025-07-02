@@ -7,7 +7,7 @@
 [![Build](https://github.com/ricaun-io/ricaun.AutoCAD.UI/actions/workflows/Build.yml/badge.svg)](https://github.com/ricaun-io/ricaun.AutoCAD.UI/actions)
 [![Release](https://img.shields.io/nuget/v/ricaun.AutoCAD.UI?logo=nuget&label=release&color=blue)](https://www.nuget.org/packages/ricaun.AutoCAD.UI)
 
-[![ricaun AutoCAD UI](https://github.com/user-attachments/assets/839c9094-e28d-4c0f-8750-714e8fc64599)](https://github.com/ricaun-io/ricaun.AutoCAD.UI)
+[![ricaun AutoCAD UI](https://raw.githubusercontent.com/ricaun/test-assets/main/assets/ricaun.AutoCAD.UI.png)](https://github.com/ricaun-io/ricaun.AutoCAD.UI)
 
 `ricaun.AutoCAD.UI` provides a set of UI controls and utilities for AutoCAD .NET applications, built on top of the `AutoCAD.NET` library. It is designed to simplify the development of ribbon user interfaces in AutoCAD plugins.
 
