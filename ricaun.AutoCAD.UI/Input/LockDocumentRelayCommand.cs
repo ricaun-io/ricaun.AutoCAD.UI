@@ -3,12 +3,12 @@ using System.Windows.Input;
 
 namespace ricaun.AutoCAD.UI.Input
 {
-    internal class RelayCommand : ICommand
+    internal class LockDocumentRelayCommand : ICommand
     {
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
 
-        public RelayCommand(Action execute, Func<bool> canExecute = null)
+        public LockDocumentRelayCommand(Action execute, Func<bool> canExecute = null)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
@@ -21,7 +21,10 @@ namespace ricaun.AutoCAD.UI.Input
 
         public void Execute(object parameter)
         {
-            _execute();
+            using (new Runtime.LockDocumentManager())
+            {
+                _execute();
+            }
         }
 
         public event EventHandler CanExecuteChanged
@@ -31,12 +34,12 @@ namespace ricaun.AutoCAD.UI.Input
         }
     }
 
-    internal class RelayCommand<T> : ICommand
+    internal class LockDocumentRelayCommand<T> : ICommand
     {
         private readonly Action<T> _execute;
         private readonly Func<T, bool> _canExecute;
 
-        public RelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
+        public LockDocumentRelayCommand(Action<T> execute, Func<T, bool> canExecute = null)
         {
             _execute = execute ?? throw new ArgumentNullException(nameof(execute));
             _canExecute = canExecute;
@@ -49,9 +52,6 @@ namespace ricaun.AutoCAD.UI.Input
                 return false;
             }
 
-            //if (!string.IsNullOrEmpty(Autodesk.AutoCAD.ApplicationServices.Application.DocumentManager.MdiActiveDocument.CommandInProgress))
-            //    return false;
-
             return _canExecute == null || _canExecute((T)parameter);
         }
 
@@ -62,7 +62,10 @@ namespace ricaun.AutoCAD.UI.Input
                 throw new InvalidOperationException("Parameter cannot be null for value types.");
             }
 
-            _execute((T)parameter);
+            using (new Runtime.LockDocumentManager())
+            {
+                _execute((T)parameter);
+            }
         }
 
         public event EventHandler CanExecuteChanged

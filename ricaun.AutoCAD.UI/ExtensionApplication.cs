@@ -170,17 +170,9 @@ namespace ricaun.AutoCAD.UI
         /// <param name="ribbonControl">The RibbonControl instance. May have no tabs.</param>
         public abstract void OnShutdown(RibbonControl ribbonControl);
 
-        /// <summary>
-        /// Displays a balloon message in the AutoCAD InfoCenter.
-        /// </summary>
-        /// <param name="message">The message to display.</param>
         internal void ShowBalloon(string message)
         {
-            var infoCenterManager = new Autodesk.AutoCAD.AcInfoCenterConn.InfoCenterManager();
-            var resultItem = new Autodesk.Internal.InfoCenter.ResultItem();
-            resultItem.Category = this.GetType().Assembly.GetName().Name;
-            resultItem.Title = message;
-            infoCenterManager.PaletteManager.ShowBalloon(resultItem);
+            Windows.InfoCenter.ShowBalloon(this.GetType().Assembly.GetName().Name, message);
         }
     }
 }

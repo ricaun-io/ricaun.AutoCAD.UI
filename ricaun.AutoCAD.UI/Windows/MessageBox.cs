@@ -29,7 +29,7 @@ namespace ricaun.AutoCAD.UI.Windows
                 MinWidth = 200,
                 ResizeMode = System.Windows.ResizeMode.NoResize,
                 SizeToContent = System.Windows.SizeToContent.WidthAndHeight,
-                Title = title,
+                Title = title ?? nameof(MessageBox),
                 ShowInTaskbar = false,
                 Topmost = true,
                 Content = new System.Windows.Controls.TextBlock()
@@ -44,6 +44,15 @@ namespace ricaun.AutoCAD.UI.Windows
             };
             new System.Windows.Interop.WindowInteropHelper(window) { Owner = ComponentManager.ApplicationWindow };
             window.Show();
+        }
+
+        /// <summary>
+        /// Displays a message box with the specified message.
+        /// </summary>
+        /// <param name="message">The message to display in the message box.</param>
+        public static void ShowMessage(string message)
+        {
+            ShowMessage(null, message);
         }
     }
 }

@@ -147,7 +147,7 @@ namespace ricaun.AutoCAD.UI
         public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, Action command) where TRibbonItem : RibbonCommandItem
         {
             if (command is not null)
-                ribbonItem.CommandHandler = new RelayCommand(command);
+                ribbonItem.CommandHandler = new LockDocumentRelayCommand(command);
 
             return ribbonItem;
         }
@@ -162,7 +162,7 @@ namespace ricaun.AutoCAD.UI
         public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, Action<TRibbonItem> command) where TRibbonItem : RibbonCommandItem
         {
             if (command is not null)
-                ribbonItem.CommandHandler = new RelayCommand<TRibbonItem>(command);
+                ribbonItem.CommandHandler = new LockDocumentRelayCommand<TRibbonItem>(command);
 
             return ribbonItem;
         }
@@ -290,7 +290,7 @@ namespace ricaun.AutoCAD.UI
         {
             image = image.GetThemeImageSource(RibbonThemePanelUtils.IsLight);
 
-            ribbonItem.Image = image?.GetBitmapFrame(16, (frame) => { ribbonItem.LargeImage = frame; });
+            ribbonItem.Image = image?.GetBitmapFrame(16, (frame) => { ribbonItem.Image = frame; });
             return ribbonItem;
         }
 
@@ -420,5 +420,17 @@ namespace ricaun.AutoCAD.UI
             ribbonControl.Tabs.Remove(ribbonTab);
         }
         #endregion
+
+        /// <summary>
+        /// Adds a separator to the ribbon panel.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <returns>The ribbon panel with the separator added.</returns>
+        public static RibbonPanel AddSeparator(this RibbonPanel ribbonPanel)
+        {
+            if (ribbonPanel is null) return ribbonPanel;
+            ribbonPanel.AddItem(new RibbonSeparator());
+            return ribbonPanel;
+        }
     }
 }
