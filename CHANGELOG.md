@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [0.2.0] / 2025-07-04
 ### Features
 - Add `ricaun.AutoCAD.UI.Example` sample project.
+### UI
+- Add `AddSeparator` extension to create a separator in the ribbon panel.
+### Example
+- Add `CircleCreate` command to the example project.
 ### Fixes
 - Fix `CheckURLValid` to support `http` and `https`.
 - Fix `SetImage` to update `Image` property.

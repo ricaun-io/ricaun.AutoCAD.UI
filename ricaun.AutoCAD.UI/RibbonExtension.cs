@@ -420,5 +420,17 @@ namespace ricaun.AutoCAD.UI
             ribbonControl.Tabs.Remove(ribbonTab);
         }
         #endregion
+
+        /// <summary>
+        /// Adds a separator to the ribbon panel.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <returns>The ribbon panel with the separator added.</returns>
+        public static RibbonPanel AddSeparator(this RibbonPanel ribbonPanel)
+        {
+            if (ribbonPanel is null) return ribbonPanel;
+            ribbonPanel.AddItem(new RibbonSeparator());
+            return ribbonPanel;
+        }
     }
 }

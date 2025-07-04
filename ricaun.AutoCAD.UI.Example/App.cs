@@ -15,8 +15,13 @@ namespace ricaun.AutoCAD.UI.Example
         {
             var ribbonPanel = ribbonControl.CreateOrSelectPanel(PanelName, TabName);
 
-            ribbonPanel.RowStackedItems(
+            ribbonPanel.RowLargeStackedItems(
                 ribbonPanel.CreateButton("Theme")
+                    .SetShowText(false)
+                    .SetCommand(Commands.ThemeChange)
+                    .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Grey-Light.tiff"),
+                ribbonPanel.CreateButton("Theme")
+                    .SetShowText(false)
                     .SetCommand(Commands.ThemeChange)
                     .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Red-Light.tiff"),
                 ribbonPanel.CreateButton("Theme")
@@ -27,8 +32,12 @@ namespace ricaun.AutoCAD.UI.Example
                     .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Blue-32-Light.png")
             );
 
-            ribbonPanel.CreateButton("Circle")
+            ribbonPanel.AddSeparator();
+
+            ribbonPanel.CreateButton("Circle\rCreate")
                 .SetCommand(Commands.CircleCreate)
+                .SetDescription("Create a circle with a random radius in the model space.")
+                .SetToolTip("This button use the command 'CircleCreate'.")
                 .SetLargeImage("Resources/Box-Cyan-Light.tiff");
 
             ribbonControl.ActiveTab = ribbonPanel.Tab;
