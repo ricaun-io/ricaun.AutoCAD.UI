@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Example
 - Add `CircleCreate` command to the example project.
 - Add `MessageBox` and `ShowBalloon` buttons to the example ribbon panel.
+- Update resource image to `Cube-Grey-Light.tiff` and `Cube-Grey-Dark.tiff`.
 ### Fixes
 - Fix `CheckURLValid` to support `http` and `https`.
 - Fix `SetImage` to update `Image` property.

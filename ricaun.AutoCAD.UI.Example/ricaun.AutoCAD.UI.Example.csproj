@@ -67,6 +67,8 @@
   <ItemGroup>
     <None Remove="Box-Cyan-Dark.tiff" />
     <None Remove="Box-Cyan-Light.tiff" />
+    <None Remove="Resources\Cube-Grey-Dark.tiff" />
+    <None Remove="Resources\Cube-Grey-Light.tiff" />
   </ItemGroup>
   
   <ItemGroup>
@@ -82,8 +84,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\Box-Cyan-Dark.tiff" />
-    <Resource Include="Resources\Box-Cyan-Light.tiff" />
+    <Resource Include="Resources\Cube-Grey-Dark.tiff" />
+    <Resource Include="Resources\Cube-Grey-Light.tiff" />
   </ItemGroup>
 
   <PropertyGroup>

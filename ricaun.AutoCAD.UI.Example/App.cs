@@ -38,15 +38,15 @@ namespace ricaun.AutoCAD.UI.Example
                 .SetCommand(Commands.CircleCreate)
                 .SetDescription("Create a circle with a random radius in the model space.")
                 .SetToolTip("This button use the command 'CircleCreate'.")
-                .SetLargeImage("Resources/Box-Cyan-Light.tiff");
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
-            ribbonPanel.CreateButton("ShowMessage")
+            ribbonPanel.CreateButton("Show\rMessage")
                 .SetCommand((item) => { Windows.MessageBox.ShowMessage(item.Text, "This is a custom message."); })
-                .SetLargeImage("Resources/Box-Cyan-Light.tiff");
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
-            ribbonPanel.CreateButton("ShowBalloon")
+            ribbonPanel.CreateButton("Show\rBalloon")
                 .SetCommand((item) => { Windows.InfoCenter.ShowBalloon(item.Text, "This is a custom message."); })
-                .SetLargeImage("Resources/Box-Cyan-Light.tiff");
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
             ribbonControl.ActiveTab = ribbonPanel.Tab;
         }
