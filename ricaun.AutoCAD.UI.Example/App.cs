@@ -14,20 +14,20 @@ namespace ricaun.AutoCAD.UI.Example
         public override void OnStartup(RibbonControl ribbonControl)
         {
             var ribbonPanel = ribbonControl.CreateOrSelectPanel(PanelName, TabName);
-            ribbonPanel.CreateButton("My Button")
-                .SetCommand(Commands.MyCommand)
-                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Cyan-Light.tiff");
+            ribbonPanel.CreateButton("Theme")
+                .SetCommand(Commands.ThemeChange)
+                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Red-Light.tiff");
 
-            ribbonPanel.CreateButton("My Button")
-                .SetCommand(Commands.MyCommand)
-                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Cyan-Light.ico");
+            ribbonPanel.CreateButton("Theme")
+                .SetCommand(Commands.ThemeChange)
+                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Green-Light.ico");
 
-            ribbonPanel.CreateButton("My Button")
-                .SetCommand(Commands.MyCommand)
-                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Cyan-32-Light.png");
+            ribbonPanel.CreateButton("Theme")
+                .SetCommand(Commands.ThemeChange)
+                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Blue-32-Light.png");
 
-            ribbonPanel.CreateButton("My Button")
-                .SetCommand(Commands.MyCommand)
+            ribbonPanel.CreateButton("Theme")
+                .SetCommand(Commands.ThemeChange)
                 .SetLargeImage("Resources/Box-Cyan-Light.tiff");
 
             ribbonControl.ActiveTab = ribbonPanel.Tab;
@@ -35,15 +35,6 @@ namespace ricaun.AutoCAD.UI.Example
         public override void OnShutdown(RibbonControl ribbonControl)
         {
             ribbonControl.RemovePanel(PanelName, TabName);
-        }
-    }
-
-    public static class Commands
-    {
-        [CommandMethod("MyCommand")]
-        public static void MyCommand()
-        {
-            
         }
     }
 }
