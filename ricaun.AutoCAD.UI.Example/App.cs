@@ -1,8 +1,10 @@
 ﻿using Autodesk.AutoCAD.Runtime;
 using Autodesk.Windows;
 using ricaun.AutoCAD.UI.Busy;
+using ricaun.AutoCAD.UI.Tasks;
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 [assembly: ExtensionApplication(typeof(ricaun.AutoCAD.UI.Example.App))]
 
@@ -53,6 +55,32 @@ namespace ricaun.AutoCAD.UI.Example
             ribbonButtonBusy = ribbonPanel.CreateButton("None")
                 .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
+            ribbonPanel.CreateButton("Task")
+                .SetCommand((item) =>
+                {
+                    if (autoCADTask is null) return;
+                    item.IsEnabled = false;
+                    Task.Run(async () =>
+                    {
+                        try
+                        {
+                            for (int i = 0; i < 10; i++)
+                            {
+                                await autoCADTask.Run(Commands.CircleCreate);
+                                await Task.Delay(100);
+                            }
+                        }
+                        finally
+                        {
+                            await autoCADTask.Run(() =>
+                            {
+                                item.IsEnabled = true;
+                            });
+                        }
+                    });
+                })
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff");
+
             ribbonControl.ActiveTab = ribbonPanel.Tab;
         }
         public override void OnShutdown(RibbonControl ribbonControl)
@@ -62,6 +90,8 @@ namespace ricaun.AutoCAD.UI.Example
 
         private RibbonButton ribbonButtonBusy;
         private AutoCADBusyService busyService;
+        private AutoCADTaskService taskService;
+        public IAutoCADTask autoCADTask => taskService;
         public override void Initialize()
         {
             base.Initialize();
@@ -71,15 +101,17 @@ namespace ricaun.AutoCAD.UI.Example
             {
                 ribbonButtonBusy?.SetText(busyService.IsAutoCADBusy ? "Busy" : "Idle");
                 var color = busyService.IsAutoCADBusy ? "Red" : "Green";
-                Debug.WriteLine(color);
                 ribbonButtonBusy?.SetLargeImage($"Resources/Cube-{color}-Light.tiff");
             };
+            taskService = new AutoCADTaskService();
+            taskService.Initialize();
         }
 
         public override void Terminate()
         {
             base.Terminate();
             busyService?.Dispose();
+            taskService?.Dispose();
         }
     }
 }

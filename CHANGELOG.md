@@ -15,10 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `MessageBox` and `ShowBalloon` buttons to the example ribbon panel.
 - Update resource image to `Cube-Grey-Light.tiff` and `Cube-Grey-Dark.tiff`.
 - Add `AutoCADBusyService` to update the button state in the example project.
-### Fixes
+- Add `AutoCADTaskService` to create multiple circles in the example project. 
+### Updates
 - Fix `CheckURLValid` to support `http` and `https`.
 - Fix `SetImage` to update `Image` property.
 - Update `LockDocumentRelayCommand` to use `LockDocumentManager` to support document locking.
+- Update `AutoCADTaskService` update `Application_Idle` to run single event handler.
 
 ## [0.1.0] / 2025-07-02
 ### Features

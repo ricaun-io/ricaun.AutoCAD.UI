@@ -61,20 +61,21 @@ namespace ricaun.AutoCAD.UI.Tasks
             if (Application.DocumentManager.IsApplicationContext == false) return;
             if (string.IsNullOrEmpty(Application.DocumentManager.MdiActiveDocument?.CommandInProgress) == false) return;
             if (eventHandlers.Count == 0) return;
-            lock (eventHandlers)
+            var eventHandler = eventHandlers[0];
+            eventHandlers.RemoveAt(0);
+            try
             {
-                foreach (var eventHandler in eventHandlers)
+                using (new LockDocumentManager())
                 {
-                    if (eventHandler is IDisposable disposable)
-                    {
-                        disposable.Dispose();
-                    }
-                    using (new LockDocumentManager())
-                    {
-                        eventHandler.Execute();
-                    }
+                    eventHandler.Execute();
                 }
-                eventHandlers.Clear();
+            }
+            finally
+            {
+                if (eventHandler is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
             }
         }
 
@@ -84,17 +85,14 @@ namespace ricaun.AutoCAD.UI.Tasks
         private void ClearEventHandlers()
         {
             if (eventHandlers.Count == 0) return;
-            lock (eventHandlers)
+            foreach (var eventHandler in eventHandlers)
             {
-                foreach (var eventHandler in eventHandlers)
+                if (eventHandler is IDisposable disposable)
                 {
-                    if (eventHandler is IDisposable disposable)
-                    {
-                        disposable.Dispose();
-                    }
+                    disposable.Dispose();
                 }
-                eventHandlers.Clear();
             }
+            eventHandlers.Clear();
         }
 
         /// <summary>
