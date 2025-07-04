@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### UI
 - Add `AddSeparator` extension to create a separator in the ribbon panel.
 - Add `InfoCenter` to display balloon information in the AutoCAD InfoCenter.
+- Add `RibbonListButton` in the `RibbonThemePanelUtils`.
 ### Example
 - Add `CircleCreate` command to the example project.
 - Add `MessageBox` and `ShowBalloon` buttons to the example ribbon panel.

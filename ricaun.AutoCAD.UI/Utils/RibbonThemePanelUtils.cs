@@ -86,14 +86,23 @@ namespace ricaun.AutoCAD.UI.Utils
         /// <param name="isLight">True if the theme is light; otherwise, false.</param>
         private static void UpdateImageThemes(RibbonItem ribbonItem, bool isLight)
         {
+            void UpdateRibbonItemTheme(RibbonItem item)
+            {
+                var image = item.Image;
+                item.SetLargeImage(item.LargeImage);
+                if (image is not null) item.SetImage(image);
+            }
             try
             {
                 switch (ribbonItem)
                 {
+                    case RibbonListButton ribbonListButton:
+                        UpdateRibbonItemTheme(ribbonListButton);
+                        foreach (var item in ribbonListButton.Items)
+                            UpdateImageThemes(item, isLight);
+                        break;
                     case RibbonButton ribbonButton:
-                        var image = ribbonButton.Image;
-                        ribbonButton.SetLargeImage(ribbonButton.LargeImage);
-                        if (image is not null) ribbonButton.SetImage(image);
+                        UpdateRibbonItemTheme(ribbonButton);
                         break;
                     case RibbonRowPanel ribbonRowPanel:
                         foreach (var item in ribbonRowPanel.Items)
