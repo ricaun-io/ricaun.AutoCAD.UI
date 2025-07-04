@@ -1,0 +1,115 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+   <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseWPF>true</UseWPF>
+    <LangVersion>latest</LangVersion>
+    <TargetFrameworks>net48;net8.0-windows</TargetFrameworks>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+  </PropertyGroup>
+
+  <!-- AutoCADVersion -->
+  <Choose>
+    <When Condition="$(TargetFramework.StartsWith('net47'))">
+      <PropertyGroup>
+        <AutoCADVersion>2019</AutoCADVersion>
+      </PropertyGroup>
+    </When>
+    <When Condition="$(TargetFramework.StartsWith('net48'))">
+      <PropertyGroup>
+        <AutoCADVersion>2021</AutoCADVersion>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup>
+        <AutoCADVersion>2025</AutoCADVersion>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  
+  <!-- AutoCADInternalVersion -->
+  <PropertyGroup>
+    <AutoCADInternalVersion Condition="$(AutoCADVersion) == 2019">23.0</AutoCADInternalVersion>
+    <AutoCADInternalVersion Condition="$(AutoCADVersion) == 2020">23.1</AutoCADInternalVersion>
+    <AutoCADInternalVersion Condition="$(AutoCADVersion) == 2021">24.0</AutoCADInternalVersion>
+    <AutoCADInternalVersion Condition="$(AutoCADVersion) == 2022">24.1</AutoCADInternalVersion>
+    <AutoCADInternalVersion Condition="$(AutoCADVersion) == 2023">24.2</AutoCADInternalVersion>
+    <AutoCADInternalVersion Condition="$(AutoCADVersion) == 2024">24.3</AutoCADInternalVersion>
+    <AutoCADInternalVersion Condition="$(AutoCADVersion) == 2025">25.0</AutoCADInternalVersion>
+    <AutoCADInternalVersion Condition="$(AutoCADVersion) == 2026">25.1</AutoCADInternalVersion>
+  </PropertyGroup>
+  
+  <!-- Release -->
+  <PropertyGroup Condition="!$(Configuration.Contains('Debug'))">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\$(AutoCADVersion)</OutputPath>
+    <DefineConstants>$(DefineConstants);AUTOCAD$(AutoCADVersion)</DefineConstants>
+    <NoWarn>MSB3052</NoWarn>
+    <DebugType>None</DebugType>
+  </PropertyGroup>
+
+  <!-- Debug -->
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\$(AutoCADVersion)</OutputPath>
+    <DefineConstants>$(DefineConstants);DEBUG;TRACE;AUTOCAD$(AutoCADVersion)</DefineConstants>
+    <DebugType>Full</DebugType>
+  </PropertyGroup>
+
+  <!-- DebugAutoCADVersion -->
+  <PropertyGroup Condition="$(Configuration.Contains('Debug'))">
+    <DebugAutoCADVersion>$(AutoCADVersion)</DebugAutoCADVersion>
+    <StartAction>Program</StartAction>
+    <StartProgram>C:\Program Files\Autodesk\AutoCAD $(DebugAutoCADVersion)\acad.exe</StartProgram>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Box-Cyan-Dark.tiff" />
+    <None Remove="Box-Cyan-Light.tiff" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="AutoCAD.NET" Version="$(AutoCADInternalVersion).*" IncludeAssets="build; compile" PrivateAssets="All" />
+    <PackageReference Include="ricaun.SignTool" Version="*" Condition="$(Configuration.Contains('Debug'))">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ricaun.AutoCAD.UI\ricaun.AutoCAD.UI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Box-Cyan-Dark.tiff" />
+    <Resource Include="Resources\Box-Cyan-Light.tiff" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <CopyBundleFiles>false</CopyBundleFiles>
+    <CopyBundleFiles Condition="$(Configuration.Contains('Debug'))">true</CopyBundleFiles>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <BundleDestinationFolder>$(AppData)\Autodesk\ApplicationPlugins\$(MSBuildProjectName).bundle</BundleDestinationFolder>
+  </PropertyGroup>
+
+  <Target Name="_CopyBundleFiles" AfterTargets="Build" Condition="$(CopyBundleFiles) and $(TargetFramework) != ''">
+    <ItemGroup>
+      <PackageContentsFile Include="$(ProjectDir)\PackageContents.xml" />
+      <BundleItems Include="$(OutputPath)**\*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(BundleItems)" SkipUnchangedFiles="false" DestinationFolder="$(BundleDestinationFolder)\$(AutoCADVersion)" ContinueOnError="true" Retries="1" />
+    <Copy SourceFiles="@(PackageContentsFile)" SkipUnchangedFiles="false" DestinationFolder="$(BundleDestinationFolder)" ContinueOnError="true" />
+
+    <Message Text="$(MSBuildProjectName) -&gt; $(BundleDestinationFolder)\$(AutoCADVersion) -&gt; [@(BundleItems -> '%(Filename)%(Extension)', ', ')] ($(TargetFramework)) " Importance="high" />
+  </Target>
+
+  <Target Name="_CleanBundleFiles" AfterTargets="Clean" Condition="$(CopyBundleFiles) and $(TargetFramework) != ''">
+    <RemoveDir Directories="$(BundleDestinationFolder)" ContinueOnError="true" />
+    <Delete Files="$(BundleDestinationFolder)\PackageContents.xml" ContinueOnError="true" />
+  </Target>
+
+</Project>

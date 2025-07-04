@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36121.58 d17.14
+VisualStudioVersion = 17.14.36121.58
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{F0F5926E-CAE6-47E7-AFB8-42D91D6B1284}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ricaun.AutoCAD.UI", "ricaun
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "Build\Build.csproj", "{E54E7E6C-CB6D-440D-BED9-35B2D49FE4EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ricaun.AutoCAD.UI.Example", "ricaun.AutoCAD.UI.Example\ricaun.AutoCAD.UI.Example.csproj", "{C623B2B9-EFDD-4518-8568-017CCCC25144}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{77755995-F69C-42C0-9A3E-1193C820DD4A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E54E7E6C-CB6D-440D-BED9-35B2D49FE4EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E54E7E6C-CB6D-440D-BED9-35B2D49FE4EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C623B2B9-EFDD-4518-8568-017CCCC25144}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C623B2B9-EFDD-4518-8568-017CCCC25144}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C623B2B9-EFDD-4518-8568-017CCCC25144}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C623B2B9-EFDD-4518-8568-017CCCC25144}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

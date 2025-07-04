@@ -290,7 +290,7 @@ namespace ricaun.AutoCAD.UI
         {
             image = image.GetThemeImageSource(RibbonThemePanelUtils.IsLight);
 
-            ribbonItem.Image = image?.GetBitmapFrame(16, (frame) => { ribbonItem.LargeImage = frame; });
+            ribbonItem.Image = image?.GetBitmapFrame(16, (frame) => { ribbonItem.Image = frame; });
             return ribbonItem;
         }
 
