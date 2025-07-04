@@ -1,7 +1,10 @@
-﻿using Autodesk.AutoCAD.Runtime;
+﻿using Autodesk.AutoCAD.DatabaseServices;
+using Autodesk.AutoCAD.Runtime;
+using Autodesk.AutoCAD.Windows;
 using Autodesk.Windows;
 using ricaun.AutoCAD.UI.Busy;
 using ricaun.AutoCAD.UI.Tasks;
+using ricaun.AutoCAD.UI.Windows;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -81,6 +84,10 @@ namespace ricaun.AutoCAD.UI.Example
                 })
                 .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
+            ribbonPanel.CreateButton("Show\rPalette")
+                .SetCommand(() => { paletteSet?.ToggleVisible(); })
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff");
+
             ribbonControl.ActiveTab = ribbonPanel.Tab;
         }
         public override void OnShutdown(RibbonControl ribbonControl)
@@ -89,6 +96,7 @@ namespace ricaun.AutoCAD.UI.Example
         }
 
         private RibbonButton ribbonButtonBusy;
+        private PaletteSet paletteSet;
         private AutoCADBusyService busyService;
         private AutoCADTaskService taskService;
         public IAutoCADTask autoCADTask => taskService;
@@ -105,6 +113,12 @@ namespace ricaun.AutoCAD.UI.Example
             };
             taskService = new AutoCADTaskService();
             taskService.Initialize();
+
+            var visual = new System.Windows.Controls.Grid()
+            {
+                Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Colors.LightGray),
+            };
+            paletteSet = PaletteSetUtils.Create("Example Palette Set", new Guid("360B945E-1EFF-4212-9C00-3E841A9F1B28"), visual);
         }
 
         public override void Terminate()

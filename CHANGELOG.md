@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Update resource image to `Cube-Grey-Light.tiff` and `Cube-Grey-Dark.tiff`.
 - Add `AutoCADBusyService` to update the button state in the example project.
 - Add `AutoCADTaskService` to create multiple circles in the example project. 
+- Add `PaletteSetUtils` to show a palette set in the example project.
 ### Updates
 - Fix `CheckURLValid` to support `http` and `https`.
 - Fix `SetImage` to update `Image` property.
