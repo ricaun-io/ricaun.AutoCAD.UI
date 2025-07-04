@@ -172,7 +172,7 @@ namespace ricaun.AutoCAD.UI
 
         internal void ShowBalloon(string message)
         {
-            Windows.InfoCenter.ShowBalloon(message, this.GetType().Assembly.GetName().Name);
+            Windows.InfoCenter.ShowBalloon(this.GetType().Assembly.GetName().Name, message);
         }
     }
 }

@@ -40,6 +40,14 @@ namespace ricaun.AutoCAD.UI.Example
                 .SetToolTip("This button use the command 'CircleCreate'.")
                 .SetLargeImage("Resources/Box-Cyan-Light.tiff");
 
+            ribbonPanel.CreateButton("ShowMessage")
+                .SetCommand((item) => { Windows.MessageBox.ShowMessage(item.Text, "This is a custom message."); })
+                .SetLargeImage("Resources/Box-Cyan-Light.tiff");
+
+            ribbonPanel.CreateButton("ShowBalloon")
+                .SetCommand((item) => { Windows.InfoCenter.ShowBalloon(item.Text, "This is a custom message."); })
+                .SetLargeImage("Resources/Box-Cyan-Light.tiff");
+
             ribbonControl.ActiveTab = ribbonPanel.Tab;
         }
         public override void OnShutdown(RibbonControl ribbonControl)
