@@ -147,7 +147,7 @@ namespace ricaun.AutoCAD.UI
         public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, Action command) where TRibbonItem : RibbonCommandItem
         {
             if (command is not null)
-                ribbonItem.CommandHandler = new RelayCommand(command);
+                ribbonItem.CommandHandler = new LockDocumentRelayCommand(command);
 
             return ribbonItem;
         }
@@ -162,7 +162,7 @@ namespace ricaun.AutoCAD.UI
         public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, Action<TRibbonItem> command) where TRibbonItem : RibbonCommandItem
         {
             if (command is not null)
-                ribbonItem.CommandHandler = new RelayCommand<TRibbonItem>(command);
+                ribbonItem.CommandHandler = new LockDocumentRelayCommand<TRibbonItem>(command);
 
             return ribbonItem;
         }

@@ -14,20 +14,21 @@ namespace ricaun.AutoCAD.UI.Example
         public override void OnStartup(RibbonControl ribbonControl)
         {
             var ribbonPanel = ribbonControl.CreateOrSelectPanel(PanelName, TabName);
-            ribbonPanel.CreateButton("Theme")
-                .SetCommand(Commands.ThemeChange)
-                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Red-Light.tiff");
 
-            ribbonPanel.CreateButton("Theme")
-                .SetCommand(Commands.ThemeChange)
-                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Green-Light.ico");
+            ribbonPanel.RowStackedItems(
+                ribbonPanel.CreateButton("Theme")
+                    .SetCommand(Commands.ThemeChange)
+                    .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Red-Light.tiff"),
+                ribbonPanel.CreateButton("Theme")
+                    .SetCommand(Commands.ThemeChange)
+                    .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Green-Light.ico"),
+                ribbonPanel.CreateButton("Theme")
+                    .SetCommand(Commands.ThemeChange)
+                    .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Blue-32-Light.png")
+            );
 
-            ribbonPanel.CreateButton("Theme")
-                .SetCommand(Commands.ThemeChange)
-                .SetLargeImage("https://github.com/ricaun-io/Autodesk.Icon.Example/releases/download/2.0.0/Box-Blue-32-Light.png");
-
-            ribbonPanel.CreateButton("Theme")
-                .SetCommand(Commands.ThemeChange)
+            ribbonPanel.CreateButton("Circle")
+                .SetCommand(Commands.CircleCreate)
                 .SetLargeImage("Resources/Box-Cyan-Light.tiff");
 
             ribbonControl.ActiveTab = ribbonPanel.Tab;
