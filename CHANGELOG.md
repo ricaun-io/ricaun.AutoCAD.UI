@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `ricaun.AutoCAD.UI.Example` sample project.
 ### UI
 - Add `AddSeparator` extension to create a separator in the ribbon panel.
+- Add `InfoCenter` to display balloon information in the AutoCAD InfoCenter.
 ### Example
 - Add `CircleCreate` command to the example project.
 ### Fixes
