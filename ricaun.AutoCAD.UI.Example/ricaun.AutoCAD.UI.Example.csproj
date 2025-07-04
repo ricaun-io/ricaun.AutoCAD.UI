@@ -64,13 +64,7 @@
     <StartAction>Program</StartAction>
     <StartProgram>C:\Program Files\Autodesk\AutoCAD $(DebugAutoCADVersion)\acad.exe</StartProgram>
   </PropertyGroup>
-  <ItemGroup>
-    <None Remove="Box-Cyan-Dark.tiff" />
-    <None Remove="Box-Cyan-Light.tiff" />
-    <None Remove="Resources\Cube-Grey-Dark.tiff" />
-    <None Remove="Resources\Cube-Grey-Light.tiff" />
-  </ItemGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="AutoCAD.NET" Version="$(AutoCADInternalVersion).*" IncludeAssets="build; compile" PrivateAssets="All" />
     <PackageReference Include="ricaun.SignTool" Version="*" Condition="$(Configuration.Contains('Debug'))">
@@ -84,8 +78,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Cube-Green-Dark.tiff" />
+    <Resource Include="Resources\Cube-Green-Light.tiff" />
     <Resource Include="Resources\Cube-Grey-Dark.tiff" />
     <Resource Include="Resources\Cube-Grey-Light.tiff" />
+    <Resource Include="Resources\Cube-Red-Dark.tiff" />
+    <Resource Include="Resources\Cube-Red-Light.tiff" />
   </ItemGroup>
 
   <PropertyGroup>

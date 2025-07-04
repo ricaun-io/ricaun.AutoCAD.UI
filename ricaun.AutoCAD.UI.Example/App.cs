@@ -1,6 +1,8 @@
 ﻿using Autodesk.AutoCAD.Runtime;
 using Autodesk.Windows;
+using ricaun.AutoCAD.UI.Busy;
 using System;
+using System.Diagnostics;
 
 [assembly: ExtensionApplication(typeof(ricaun.AutoCAD.UI.Example.App))]
 
@@ -48,11 +50,36 @@ namespace ricaun.AutoCAD.UI.Example
                 .SetCommand((item) => { Windows.InfoCenter.ShowBalloon(item.Text, "This is a custom message."); })
                 .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
+            ribbonButtonBusy = ribbonPanel.CreateButton("None")
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff");
+
             ribbonControl.ActiveTab = ribbonPanel.Tab;
         }
         public override void OnShutdown(RibbonControl ribbonControl)
         {
             ribbonControl.RemovePanel(PanelName, TabName);
+        }
+
+        private RibbonButton ribbonButtonBusy;
+        private AutoCADBusyService busyService;
+        public override void Initialize()
+        {
+            base.Initialize();
+            busyService = new AutoCADBusyService();
+            busyService.Initialize();
+            busyService.PropertyChanged += (sender, e) =>
+            {
+                ribbonButtonBusy?.SetText(busyService.IsAutoCADBusy ? "Busy" : "Idle");
+                var color = busyService.IsAutoCADBusy ? "Red" : "Green";
+                Debug.WriteLine(color);
+                ribbonButtonBusy?.SetLargeImage($"Resources/Cube-{color}-Light.tiff");
+            };
+        }
+
+        public override void Terminate()
+        {
+            base.Terminate();
+            busyService?.Dispose();
         }
     }
 }
