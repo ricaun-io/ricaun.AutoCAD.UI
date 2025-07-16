@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### UI
 - Update `RibbonExtension` to support `CreateSplitButton` and `CreatePulldownButton`.
 - Update `MessageBox.ShowMessage` to close window using `Key.Escape`.
+- Add `SetListImageSize` to set the image size for `RibbonListButton`.
 ### Example
 - Add `CreateSplitButton` and `CreatePulldownButton` to the example project.
 

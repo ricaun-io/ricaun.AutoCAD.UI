@@ -505,13 +505,26 @@ namespace ricaun.AutoCAD.UI
         }
 
         /// <summary>
+        /// Sets the image size for the list items in a <see cref="RibbonSplitButton"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the ribbon split button.</typeparam>
+        /// <param name="ribbonSplitButton">The ribbon split button to extend.</param>
+        /// <param name="listImageSize">The image size to set for the list items. Default is <see cref="RibbonImageSize.Standard"/>.</param>
+        /// <returns>The ribbon split button with the updated list image size.</returns>
+        public static T SetListImageSize<T>(this T ribbonSplitButton, RibbonImageSize listImageSize = RibbonImageSize.Standard) where T : RibbonSplitButton
+        {
+            ribbonSplitButton.ListImageSize = listImageSize;
+            return ribbonSplitButton;
+        }
+
+        /// <summary>
         /// Adds the specified ribbon items to the <see cref="RibbonListButton"/>.
         /// </summary>
         /// <typeparam name="T">The type of ribbon list button.</typeparam>
         /// <param name="ribbonListButton">The ribbon list button to extend.</param>
         /// <param name="ribbonItems">The ribbon items to add.</param>
         /// <returns>The ribbon list button with the items added.</returns>
-        public static T AddItems<T>(this T ribbonListButton, params RibbonItem[] ribbonItems) where T : RibbonListButton, new()
+        public static T AddItems<T>(this T ribbonListButton, params RibbonItem[] ribbonItems) where T : RibbonListButton
         {
             return ribbonListButton.AddItems(null, ribbonItems);
         }
@@ -526,7 +539,7 @@ namespace ricaun.AutoCAD.UI
         /// <returns>
         /// The ribbon list button with the items added.
         /// </returns>
-        public static T AddItems<T>(this T ribbonListButton, RibbonPanel ribbonPanel, params RibbonItem[] ribbonItems) where T : RibbonListButton, new()
+        public static T AddItems<T>(this T ribbonListButton, RibbonPanel ribbonPanel, params RibbonItem[] ribbonItems) where T : RibbonListButton
         {
             foreach (var ribbonItem in ribbonItems)
             {
