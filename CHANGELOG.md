@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Support `CreatePulldownButton` extension.
 ### UI
 - Update `RibbonExtension` to support `CreateSplitButton` and `CreatePulldownButton`.
+- Update `MessageBox.ShowMessage` to close window using `Key.Escape`.
 ### Example
 - Add `CreateSplitButton` and `CreatePulldownButton` to the example project.
 
