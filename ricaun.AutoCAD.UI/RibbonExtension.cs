@@ -2,6 +2,7 @@
 using ricaun.AutoCAD.UI.Input;
 using ricaun.AutoCAD.UI.Utils;
 using System;
+using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -20,7 +21,12 @@ namespace ricaun.AutoCAD.UI
         /// <returns>A new <see cref="RibbonButton"/> instance.</returns>
         public static RibbonButton NewButton(this RibbonPanel ribbonPanel, string name)
         {
-            RibbonButton ribbonButton = new RibbonButton
+            return ribbonPanel.NewButton<RibbonButton>(name);
+        }
+
+        internal static T NewButton<T>(this RibbonPanel ribbonPanel, string name) where T : RibbonButton, new()
+        {
+            var ribbonButton = new T
             {
                 Orientation = Orientation.Vertical,
                 AllowInStatusBar = true,
@@ -432,5 +438,104 @@ namespace ricaun.AutoCAD.UI
             ribbonPanel.AddItem(new RibbonSeparator());
             return ribbonPanel;
         }
+
+        #region RibbonListButton
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonSplitButton"/>, adds it to the panel, and populates it with the specified ribbon items.
+        /// Removes the added items from the panel after adding them to the split button.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the split button.</param>
+        /// <param name="ribbonItems">The ribbon items to add to the split button.</param>
+        /// <returns>The created <see cref="RibbonSplitButton"/>.</returns>
+        public static RibbonSplitButton CreateSplitButton(this RibbonPanel ribbonPanel, string name, params RibbonItem[] ribbonItems)
+        {
+            var splitButton = ribbonPanel.NewSplitButton(name);
+            ribbonPanel.AddItem(splitButton);
+
+            return splitButton.AddItems(ribbonPanel, ribbonItems);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonSplitButton"/> configured as a pulldown button, adds it to the panel, and populates it with the specified ribbon items.
+        /// Removes the added items from the panel after adding them to the pulldown button.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the pulldown button.</param>
+        /// <param name="ribbonItems">The ribbon items to add to the pulldown button.</param>
+        /// <returns>The created <see cref="RibbonSplitButton"/> configured as a pulldown button.</returns>
+        /// <remarks>
+        /// Pulldown is a <see cref="RibbonSplitButton"/> that have <see cref="RibbonListButton.IsSplit"/> false and <see cref="RibbonListButton.IsSynchronizedWithCurrentItem"/> false.
+        /// </remarks>
+        public static RibbonSplitButton CreatePulldownButton(this RibbonPanel ribbonPanel, string name, params RibbonItem[] ribbonItems)
+        {
+            var splitButton = ribbonPanel.NewPulldownButton(name);
+            ribbonPanel.AddItem(splitButton);
+
+            return splitButton.AddItems(ribbonPanel, ribbonItems);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonSplitButton"/> with default settings and the specified name.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the split button.</param>
+        /// <returns>A new <see cref="RibbonSplitButton"/> instance.</returns>
+        public static RibbonSplitButton NewSplitButton(this RibbonPanel ribbonPanel, string name)
+        {
+            return ribbonPanel.NewButton<RibbonSplitButton>(name);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonSplitButton"/> configured as a pulldown button with the specified name.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the pulldown button.</param>
+        /// <returns>A new <see cref="RibbonSplitButton"/> configured as a pulldown button.</returns>
+        /// <remarks>
+        /// Pulldown is a <see cref="RibbonSplitButton"/> that have <see cref="RibbonListButton.IsSplit"/> false and <see cref="RibbonListButton.IsSynchronizedWithCurrentItem"/> false.
+        /// </remarks>
+        public static RibbonSplitButton NewPulldownButton(this RibbonPanel ribbonPanel, string name)
+        {
+            var pulldownButton = ribbonPanel.NewSplitButton(name);
+            pulldownButton.IsSplit = false;
+            pulldownButton.IsSynchronizedWithCurrentItem = false;
+            return pulldownButton;
+        }
+
+        /// <summary>
+        /// Adds the specified ribbon items to the <see cref="RibbonListButton"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of ribbon list button.</typeparam>
+        /// <param name="ribbonListButton">The ribbon list button to extend.</param>
+        /// <param name="ribbonItems">The ribbon items to add.</param>
+        /// <returns>The ribbon list button with the items added.</returns>
+        public static T AddItems<T>(this T ribbonListButton, params RibbonItem[] ribbonItems) where T : RibbonListButton, new()
+        {
+            return ribbonListButton.AddItems(null, ribbonItems);
+        }
+
+        /// <summary>
+        /// Adds the specified ribbon items to the <see cref="RibbonListButton"/> and removes them from the given <see cref="RibbonPanel"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of ribbon list button.</typeparam>
+        /// <param name="ribbonListButton">The ribbon list button to extend.</param>
+        /// <param name="ribbonPanel">The ribbon panel from which to remove the items.</param>
+        /// <param name="ribbonItems">The ribbon items to add to the list button.</param>
+        /// <returns>
+        /// The ribbon list button with the items added.
+        /// </returns>
+        public static T AddItems<T>(this T ribbonListButton, RibbonPanel ribbonPanel, params RibbonItem[] ribbonItems) where T : RibbonListButton, new()
+        {
+            foreach (var ribbonItem in ribbonItems)
+            {
+                ribbonListButton.Items.Add(ribbonItem);
+                ribbonPanel.Remove(ribbonItem);
+            }
+            return ribbonListButton;
+        }
+
+        #endregion
     }
 }

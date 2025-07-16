@@ -88,6 +88,34 @@ namespace ricaun.AutoCAD.UI.Example
                 .SetCommand(() => { paletteSet?.ToggleVisible(); })
                 .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
+            ribbonPanel.AddSeparator();
+
+            ribbonPanel.CreateSplitButton("Split", 
+                ribbonPanel.CreateButton("Grey")
+                    .SetCommand(e=>Windows.MessageBox.ShowMessage(e.Text))
+                    .SetLargeImage("Resources/Cube-Grey-Light.tiff"),
+                ribbonPanel.CreateButton("Red")
+                    .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
+                    .SetLargeImage("Resources/Cube-Red-Light.tiff"),
+                ribbonPanel.CreateButton("Green")
+                    .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
+                    .SetLargeImage("Resources/Cube-Green-Light.tiff")
+            );
+
+            ribbonPanel.CreatePulldownButton("Pulldown",
+                ribbonPanel.CreateButton("Grey")
+                    .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
+                    .SetLargeImage("Resources/Cube-Grey-Light.tiff"),
+                ribbonPanel.CreateButton("Red")
+                    .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
+                    .SetLargeImage("Resources/Cube-Red-Light.tiff"),
+                ribbonPanel.CreateButton("Green")
+                    .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
+                    .SetLargeImage("Resources/Cube-Green-Light.tiff")
+            )
+            .SetLargeImage("Resources/Cube-Green-Light.tiff")
+            .SetDescription("This is a PulldownButton");
+
             ribbonControl.ActiveTab = ribbonPanel.Tab;
         }
         public override void OnShutdown(RibbonControl ribbonControl)
