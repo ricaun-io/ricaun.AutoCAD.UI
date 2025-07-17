@@ -27,12 +27,12 @@ public class MyExtensionApp : ExtensionApplication
 {
     public override void OnStartup(RibbonControl ribbonControl)
     {
-        ribbonControl.CreateOrSelectPanel("MyPanel", "MyTab")
+        ribbonControl.CreatePanel("MyPanel");
     }
 
     public override void OnShutdown(RibbonControl ribbonControl)
     {
-        ribbonControl.RemovePanel("MyPanel", "MyTab");
+        ribbonControl.RemovePanel("MyPanel");
     }
 }
 ```

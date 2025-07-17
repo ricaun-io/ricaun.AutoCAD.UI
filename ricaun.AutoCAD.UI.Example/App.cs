@@ -20,7 +20,7 @@ namespace ricaun.AutoCAD.UI.Example
 
         public override void OnStartup(RibbonControl ribbonControl)
         {
-            var ribbonPanel = ribbonControl.CreateOrSelectPanel(PanelName, TabName);
+            var ribbonPanel = ribbonControl.CreateOrSelectPanel(TabName, PanelName);
 
             ribbonPanel.RowLargeStackedItems(
                 ribbonPanel.CreateButton("Theme")
@@ -120,7 +120,7 @@ namespace ricaun.AutoCAD.UI.Example
         }
         public override void OnShutdown(RibbonControl ribbonControl)
         {
-            ribbonControl.RemovePanel(PanelName, TabName);
+            ribbonControl.RemovePanel(TabName, PanelName);
         }
 
         private RibbonButton ribbonButtonBusy;

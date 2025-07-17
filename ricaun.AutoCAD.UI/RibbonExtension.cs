@@ -2,7 +2,6 @@
 using ricaun.AutoCAD.UI.Input;
 using ricaun.AutoCAD.UI.Utils;
 using System;
-using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -144,7 +143,7 @@ namespace ricaun.AutoCAD.UI
         }
 
         /// <summary>
-        /// Sets the command handler for a ribbon command item using an <see cref="ICommand"/>.
+        /// Sets the command handler for a ribbon command item using an <see cref="System.Windows.Input.ICommand"/>.
         /// </summary>
         /// <typeparam name="TRibbonItem">The type of ribbon command item.</typeparam>
         /// <param name="ribbonItem">The ribbon item to extend.</param>
@@ -370,30 +369,61 @@ namespace ricaun.AutoCAD.UI
         }
 
         /// <summary>
-        /// Finds or creates a ribbon panel with the specified name in the specified tab.
+        /// Creates a new <see cref="RibbonPanel"/> in the specified tab of the ribbon control.
         /// </summary>
         /// <param name="ribbon">The ribbon control to extend.</param>
-        /// <param name="panelName">The panel name.</param>
-        /// <param name="tabName">The tab name.</param>
-        /// <returns>The found or created <see cref="RibbonPanel"/>.</returns>
-        public static RibbonPanel CreateOrSelectPanel(this RibbonControl ribbon, string panelName, string tabName = AddinTabName)
+        /// <param name="tabName">The name of the tab to add the panel to.</param>
+        /// <param name="panelName">The name of the panel to create.</param>
+        /// <returns>The created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreatePanel(this RibbonControl ribbon, string tabName, string panelName)
         {
-            RibbonTab ribbonTab = ribbon.FindTab(tabName);
-            if (ribbonTab == null)
-                ribbonTab = ribbon.CreateOrSelectTab(tabName);
+            RibbonTab ribbonTab = ribbon.CreateOrSelectTab(tabName);
+            return ribbonTab.CreatePanel(panelName);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonPanel"/> in the default Add-Ins tab of the ribbon control.
+        /// </summary>
+        /// <param name="ribbon">The ribbon control to extend.</param>
+        /// <param name="panelName">The name of the panel to create.</param>
+        /// <returns>The created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreatePanel(this RibbonControl ribbon, string panelName)
+        {
+            return ribbon.CreatePanel(AddinTabName, panelName);
+        }
+
+        /// <summary>
+        /// Finds or creates a <see cref="RibbonPanel"/> in the specified tab of the ribbon control.
+        /// </summary>
+        /// <param name="ribbon">The ribbon control to extend.</param>
+        /// <param name="tabName">The name of the tab to find or create the panel in.</param>
+        /// <param name="panelName">The name of the panel to find or create.</param>
+        /// <returns>The found or created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreateOrSelectPanel(this RibbonControl ribbon, string tabName, string panelName)
+        {
+            RibbonTab ribbonTab = ribbon.CreateOrSelectTab(tabName);
             return ribbonTab.CreateOrSelectPanel(panelName);
         }
 
         /// <summary>
-        /// Removes a ribbon panel with the specified name from the specified tab in the ribbon control.
+        /// Finds or creates a <see cref="RibbonPanel"/> in the default Add-Ins tab of the ribbon control.
         /// </summary>
         /// <param name="ribbon">The ribbon control to extend.</param>
-        /// <param name="panelName">The name of the panel to remove.</param>
+        /// <param name="panelName">The name of the panel to find or create.</param>
+        /// <returns>The found or created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreateOrSelectPanel(this RibbonControl ribbon, string panelName)
+        {
+            return ribbon.CreateOrSelectPanel(AddinTabName, panelName);
+        }
+
+        /// <summary>
+        /// Removes a <see cref="RibbonPanel"/> from the specified tab in the ribbon control.
+        /// </summary>
+        /// <param name="ribbon">The ribbon control to extend.</param>
         /// <param name="tabName">The name of the tab containing the panel.</param>
-        /// <returns>
-        /// The <see cref="RibbonPanel"/> that was removed, or <c>null</c> if the tab or panel was not found.
-        /// </returns>
-        public static RibbonPanel RemovePanel(this RibbonControl ribbon, string panelName, string tabName = AddinTabName)
+        /// <param name="panelName">The name of the panel to remove.</param>
+        /// <returns>The removed <see cref="RibbonPanel"/>, or null if not found.</returns>
+        public static RibbonPanel RemovePanel(this RibbonControl ribbon, string tabName, string panelName)
         {
             RibbonTab ribbonTab = ribbon.FindTab(tabName);
             if (ribbonTab == null) return null;
@@ -402,6 +432,38 @@ namespace ricaun.AutoCAD.UI
             {
                 ribbonPanel.Remove();
             }
+            return ribbonPanel;
+        }
+
+        /// <summary>
+        /// Removes a <see cref="RibbonPanel"/> from the default Add-Ins tab in the ribbon control.
+        /// </summary>
+        /// <param name="ribbon">The ribbon control to extend.</param>
+        /// <param name="panelName">The name of the panel to remove.</param>
+        /// <returns>The removed <see cref="RibbonPanel"/>, or null if not found.</returns>
+        public static RibbonPanel RemovePanel(this RibbonControl ribbon, string panelName)
+        {
+            return ribbon.RemovePanel(AddinTabName, panelName);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonPanel"/> in the specified tab.
+        /// </summary>
+        /// <param name="ribbonTab">The ribbon tab to extend.</param>
+        /// <param name="panelId">The ID of the panel to create.</param>
+        /// <param name="panelTitle">The title of the panel (optional).</param>
+        /// <returns>The created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreatePanel(this RibbonTab ribbonTab, string panelId, string panelTitle = null)
+        {
+            var ribbonPanelSource = new RibbonPanelSource();
+            ribbonPanelSource.Title = panelTitle ?? panelId;
+            ribbonPanelSource.Id = panelId;
+
+            var ribbonPanel = new RibbonPanel();
+            ribbonPanel.ThemeChangeEnable();
+            ribbonPanel.Source = ribbonPanelSource;
+            ribbonTab.Panels.Add(ribbonPanel);
+
             return ribbonPanel;
         }
 
@@ -415,16 +477,9 @@ namespace ricaun.AutoCAD.UI
         public static RibbonPanel CreateOrSelectPanel(this RibbonTab ribbonTab, string panelId, string panelTitle = null)
         {
             RibbonPanel ribbonPanel = ribbonTab.FindPanel(panelId);
-            if (ribbonPanel == null)
+            if (ribbonPanel is null)
             {
-                var ribbonPanelSource = new RibbonPanelSource();
-                ribbonPanelSource.Title = panelTitle ?? panelId;
-                ribbonPanelSource.Id = panelId;
-
-                ribbonPanel = new RibbonPanel();
-                ribbonPanel.ThemeChangeEnable();
-                ribbonPanel.Source = ribbonPanelSource;
-                ribbonTab.Panels.Add(ribbonPanel);
+                ribbonPanel = ribbonTab.CreatePanel(panelId, panelTitle);
             }
             return ribbonPanel;
         }
@@ -439,6 +494,19 @@ namespace ricaun.AutoCAD.UI
             var ribbonControl = ComponentManager.Ribbon;
             if (ribbonControl is null) return;
             ribbonControl.Tabs.Remove(ribbonTab);
+        }
+
+        /// <summary>
+        /// Sets the title of the specified <see cref="RibbonPanel"/>.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to set the title for.</param>
+        /// <param name="title">The title to assign to the ribbon panel.</param>
+        /// <returns>The <see cref="RibbonPanel"/> with the updated title.</returns>
+        public static RibbonPanel SetTitle(this RibbonPanel ribbonPanel, string title)
+        {
+            if (ribbonPanel is null) return ribbonPanel;
+            ribbonPanel.Source.Title = title;
+            return ribbonPanel;
         }
         #endregion
 
