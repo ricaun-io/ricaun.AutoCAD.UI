@@ -144,6 +144,21 @@ namespace ricaun.AutoCAD.UI
         }
 
         /// <summary>
+        /// Sets the command handler for a ribbon command item using an <see cref="ICommand"/>.
+        /// </summary>
+        /// <typeparam name="TRibbonItem">The type of ribbon command item.</typeparam>
+        /// <param name="ribbonItem">The ribbon item to extend.</param>
+        /// <param name="command">The command to assign as the handler.</param>
+        /// <returns>The ribbon item with the command handler set.</returns>
+        public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, System.Windows.Input.ICommand command) where TRibbonItem : RibbonCommandItem
+        {
+            if (command is not null)
+                ribbonItem.CommandHandler = command;
+
+            return ribbonItem;
+        }
+
+        /// <summary>
         /// Sets the command handler for a ribbon command item.
         /// </summary>
         /// <typeparam name="TRibbonItem">The type of ribbon command item.</typeparam>
