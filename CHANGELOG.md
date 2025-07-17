@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] / 2025-07-15
+### Features
+- Support `CreateSplitButton` extension.
+- Support `CreatePulldownButton` extension.
+- Support `CreatePanel` extension.
+### UI
+- Update `RibbonExtension` to support `CreateSplitButton` and `CreatePulldownButton`.
+- Update `MessageBox.ShowMessage` to close window using `Key.Escape`.
+- Add `SetListImageSize` to set the image size for `RibbonListButton`.
+- Update `CreatePanel` and `CreateOrSelectPanel` to use `TabName` and `PanelName` parameters.
+### Example
+- Add `CreateSplitButton` and `CreatePulldownButton` to the example project.
+
 ## [0.2.0] / 2025-07-04
 ### Features
 - Add `ricaun.AutoCAD.UI.Example` sample project.
@@ -33,5 +46,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `Busy`, `Runtime`, `Tasks`, and `Windows` utilities.
 
 [vNext]: ../../compare/1.0.0...HEAD
+[0.3.0]: ../../compare/0.2.0...0.3.0
 [0.2.0]: ../../compare/0.1.0...0.2.0
 [0.1.0]: ../../compare/0.1.0

@@ -1,4 +1,5 @@
 ﻿using Autodesk.Windows;
+using System.Windows.Input;
 
 namespace ricaun.AutoCAD.UI.Windows
 {
@@ -42,6 +43,8 @@ namespace ricaun.AutoCAD.UI.Windows
                     VerticalAlignment = System.Windows.VerticalAlignment.Center,
                 },
             };
+            window.CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, (s, e) => { if (s is System.Windows.Window w) w.Close(); }));
+            window.InputBindings.Add(new InputBinding(ApplicationCommands.Close, new KeyGesture(Key.Escape)));
             new System.Windows.Interop.WindowInteropHelper(window) { Owner = ComponentManager.ApplicationWindow };
             window.Show();
         }

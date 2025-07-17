@@ -20,7 +20,12 @@ namespace ricaun.AutoCAD.UI
         /// <returns>A new <see cref="RibbonButton"/> instance.</returns>
         public static RibbonButton NewButton(this RibbonPanel ribbonPanel, string name)
         {
-            RibbonButton ribbonButton = new RibbonButton
+            return ribbonPanel.NewButton<RibbonButton>(name);
+        }
+
+        internal static T NewButton<T>(this RibbonPanel ribbonPanel, string name) where T : RibbonButton, new()
+        {
+            var ribbonButton = new T
             {
                 Orientation = Orientation.Vertical,
                 AllowInStatusBar = true,
@@ -135,6 +140,21 @@ namespace ricaun.AutoCAD.UI
 
             ribbonPanel.Items.Add(ribbonButton);
             return ribbonButton;
+        }
+
+        /// <summary>
+        /// Sets the command handler for a ribbon command item using an <see cref="System.Windows.Input.ICommand"/>.
+        /// </summary>
+        /// <typeparam name="TRibbonItem">The type of ribbon command item.</typeparam>
+        /// <param name="ribbonItem">The ribbon item to extend.</param>
+        /// <param name="command">The command to assign as the handler.</param>
+        /// <returns>The ribbon item with the command handler set.</returns>
+        public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, System.Windows.Input.ICommand command) where TRibbonItem : RibbonCommandItem
+        {
+            if (command is not null)
+                ribbonItem.CommandHandler = command;
+
+            return ribbonItem;
         }
 
         /// <summary>
@@ -349,30 +369,61 @@ namespace ricaun.AutoCAD.UI
         }
 
         /// <summary>
-        /// Finds or creates a ribbon panel with the specified name in the specified tab.
+        /// Creates a new <see cref="RibbonPanel"/> in the specified tab of the ribbon control.
         /// </summary>
         /// <param name="ribbon">The ribbon control to extend.</param>
-        /// <param name="panelName">The panel name.</param>
-        /// <param name="tabName">The tab name.</param>
-        /// <returns>The found or created <see cref="RibbonPanel"/>.</returns>
-        public static RibbonPanel CreateOrSelectPanel(this RibbonControl ribbon, string panelName, string tabName = AddinTabName)
+        /// <param name="tabName">The name of the tab to add the panel to.</param>
+        /// <param name="panelName">The name of the panel to create.</param>
+        /// <returns>The created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreatePanel(this RibbonControl ribbon, string tabName, string panelName)
         {
-            RibbonTab ribbonTab = ribbon.FindTab(tabName);
-            if (ribbonTab == null)
-                ribbonTab = ribbon.CreateOrSelectTab(tabName);
+            RibbonTab ribbonTab = ribbon.CreateOrSelectTab(tabName);
+            return ribbonTab.CreatePanel(panelName);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonPanel"/> in the default Add-Ins tab of the ribbon control.
+        /// </summary>
+        /// <param name="ribbon">The ribbon control to extend.</param>
+        /// <param name="panelName">The name of the panel to create.</param>
+        /// <returns>The created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreatePanel(this RibbonControl ribbon, string panelName)
+        {
+            return ribbon.CreatePanel(AddinTabName, panelName);
+        }
+
+        /// <summary>
+        /// Finds or creates a <see cref="RibbonPanel"/> in the specified tab of the ribbon control.
+        /// </summary>
+        /// <param name="ribbon">The ribbon control to extend.</param>
+        /// <param name="tabName">The name of the tab to find or create the panel in.</param>
+        /// <param name="panelName">The name of the panel to find or create.</param>
+        /// <returns>The found or created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreateOrSelectPanel(this RibbonControl ribbon, string tabName, string panelName)
+        {
+            RibbonTab ribbonTab = ribbon.CreateOrSelectTab(tabName);
             return ribbonTab.CreateOrSelectPanel(panelName);
         }
 
         /// <summary>
-        /// Removes a ribbon panel with the specified name from the specified tab in the ribbon control.
+        /// Finds or creates a <see cref="RibbonPanel"/> in the default Add-Ins tab of the ribbon control.
         /// </summary>
         /// <param name="ribbon">The ribbon control to extend.</param>
-        /// <param name="panelName">The name of the panel to remove.</param>
+        /// <param name="panelName">The name of the panel to find or create.</param>
+        /// <returns>The found or created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreateOrSelectPanel(this RibbonControl ribbon, string panelName)
+        {
+            return ribbon.CreateOrSelectPanel(AddinTabName, panelName);
+        }
+
+        /// <summary>
+        /// Removes a <see cref="RibbonPanel"/> from the specified tab in the ribbon control.
+        /// </summary>
+        /// <param name="ribbon">The ribbon control to extend.</param>
         /// <param name="tabName">The name of the tab containing the panel.</param>
-        /// <returns>
-        /// The <see cref="RibbonPanel"/> that was removed, or <c>null</c> if the tab or panel was not found.
-        /// </returns>
-        public static RibbonPanel RemovePanel(this RibbonControl ribbon, string panelName, string tabName = AddinTabName)
+        /// <param name="panelName">The name of the panel to remove.</param>
+        /// <returns>The removed <see cref="RibbonPanel"/>, or null if not found.</returns>
+        public static RibbonPanel RemovePanel(this RibbonControl ribbon, string tabName, string panelName)
         {
             RibbonTab ribbonTab = ribbon.FindTab(tabName);
             if (ribbonTab == null) return null;
@@ -381,6 +432,38 @@ namespace ricaun.AutoCAD.UI
             {
                 ribbonPanel.Remove();
             }
+            return ribbonPanel;
+        }
+
+        /// <summary>
+        /// Removes a <see cref="RibbonPanel"/> from the default Add-Ins tab in the ribbon control.
+        /// </summary>
+        /// <param name="ribbon">The ribbon control to extend.</param>
+        /// <param name="panelName">The name of the panel to remove.</param>
+        /// <returns>The removed <see cref="RibbonPanel"/>, or null if not found.</returns>
+        public static RibbonPanel RemovePanel(this RibbonControl ribbon, string panelName)
+        {
+            return ribbon.RemovePanel(AddinTabName, panelName);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonPanel"/> in the specified tab.
+        /// </summary>
+        /// <param name="ribbonTab">The ribbon tab to extend.</param>
+        /// <param name="panelId">The ID of the panel to create.</param>
+        /// <param name="panelTitle">The title of the panel (optional).</param>
+        /// <returns>The created <see cref="RibbonPanel"/>.</returns>
+        public static RibbonPanel CreatePanel(this RibbonTab ribbonTab, string panelId, string panelTitle = null)
+        {
+            var ribbonPanelSource = new RibbonPanelSource();
+            ribbonPanelSource.Title = panelTitle ?? panelId;
+            ribbonPanelSource.Id = panelId;
+
+            var ribbonPanel = new RibbonPanel();
+            ribbonPanel.ThemeChangeEnable();
+            ribbonPanel.Source = ribbonPanelSource;
+            ribbonTab.Panels.Add(ribbonPanel);
+
             return ribbonPanel;
         }
 
@@ -394,16 +477,9 @@ namespace ricaun.AutoCAD.UI
         public static RibbonPanel CreateOrSelectPanel(this RibbonTab ribbonTab, string panelId, string panelTitle = null)
         {
             RibbonPanel ribbonPanel = ribbonTab.FindPanel(panelId);
-            if (ribbonPanel == null)
+            if (ribbonPanel is null)
             {
-                var ribbonPanelSource = new RibbonPanelSource();
-                ribbonPanelSource.Title = panelTitle ?? panelId;
-                ribbonPanelSource.Id = panelId;
-
-                ribbonPanel = new RibbonPanel();
-                ribbonPanel.ThemeChangeEnable();
-                ribbonPanel.Source = ribbonPanelSource;
-                ribbonTab.Panels.Add(ribbonPanel);
+                ribbonPanel = ribbonTab.CreatePanel(panelId, panelTitle);
             }
             return ribbonPanel;
         }
@@ -419,6 +495,19 @@ namespace ricaun.AutoCAD.UI
             if (ribbonControl is null) return;
             ribbonControl.Tabs.Remove(ribbonTab);
         }
+
+        /// <summary>
+        /// Sets the title of the specified <see cref="RibbonPanel"/>.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to set the title for.</param>
+        /// <param name="title">The title to assign to the ribbon panel.</param>
+        /// <returns>The <see cref="RibbonPanel"/> with the updated title.</returns>
+        public static RibbonPanel SetTitle(this RibbonPanel ribbonPanel, string title)
+        {
+            if (ribbonPanel is null) return ribbonPanel;
+            ribbonPanel.Source.Title = title;
+            return ribbonPanel;
+        }
         #endregion
 
         /// <summary>
@@ -432,5 +521,117 @@ namespace ricaun.AutoCAD.UI
             ribbonPanel.AddItem(new RibbonSeparator());
             return ribbonPanel;
         }
+
+        #region RibbonListButton
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonSplitButton"/>, adds it to the panel, and populates it with the specified ribbon items.
+        /// Removes the added items from the panel after adding them to the split button.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the split button.</param>
+        /// <param name="ribbonItems">The ribbon items to add to the split button.</param>
+        /// <returns>The created <see cref="RibbonSplitButton"/>.</returns>
+        public static RibbonSplitButton CreateSplitButton(this RibbonPanel ribbonPanel, string name, params RibbonItem[] ribbonItems)
+        {
+            var splitButton = ribbonPanel.NewSplitButton(name);
+            ribbonPanel.AddItem(splitButton);
+
+            return splitButton.AddItems(ribbonPanel, ribbonItems);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonSplitButton"/> configured as a pulldown button, adds it to the panel, and populates it with the specified ribbon items.
+        /// Removes the added items from the panel after adding them to the pulldown button.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the pulldown button.</param>
+        /// <param name="ribbonItems">The ribbon items to add to the pulldown button.</param>
+        /// <returns>The created <see cref="RibbonSplitButton"/> configured as a pulldown button.</returns>
+        /// <remarks>
+        /// Pulldown is a <see cref="RibbonSplitButton"/> that have <see cref="RibbonListButton.IsSplit"/> false and <see cref="RibbonListButton.IsSynchronizedWithCurrentItem"/> false.
+        /// </remarks>
+        public static RibbonSplitButton CreatePulldownButton(this RibbonPanel ribbonPanel, string name, params RibbonItem[] ribbonItems)
+        {
+            var splitButton = ribbonPanel.NewPulldownButton(name);
+            ribbonPanel.AddItem(splitButton);
+
+            return splitButton.AddItems(ribbonPanel, ribbonItems);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonSplitButton"/> with default settings and the specified name.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the split button.</param>
+        /// <returns>A new <see cref="RibbonSplitButton"/> instance.</returns>
+        public static RibbonSplitButton NewSplitButton(this RibbonPanel ribbonPanel, string name)
+        {
+            return ribbonPanel.NewButton<RibbonSplitButton>(name);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonSplitButton"/> configured as a pulldown button with the specified name.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the pulldown button.</param>
+        /// <returns>A new <see cref="RibbonSplitButton"/> configured as a pulldown button.</returns>
+        /// <remarks>
+        /// Pulldown is a <see cref="RibbonSplitButton"/> that have <see cref="RibbonListButton.IsSplit"/> false and <see cref="RibbonListButton.IsSynchronizedWithCurrentItem"/> false.
+        /// </remarks>
+        public static RibbonSplitButton NewPulldownButton(this RibbonPanel ribbonPanel, string name)
+        {
+            var pulldownButton = ribbonPanel.NewSplitButton(name);
+            pulldownButton.IsSplit = false;
+            pulldownButton.IsSynchronizedWithCurrentItem = false;
+            return pulldownButton;
+        }
+
+        /// <summary>
+        /// Sets the image size for the list items in a <see cref="RibbonSplitButton"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the ribbon split button.</typeparam>
+        /// <param name="ribbonSplitButton">The ribbon split button to extend.</param>
+        /// <param name="listImageSize">The image size to set for the list items. Default is <see cref="RibbonImageSize.Standard"/>.</param>
+        /// <returns>The ribbon split button with the updated list image size.</returns>
+        public static T SetListImageSize<T>(this T ribbonSplitButton, RibbonImageSize listImageSize = RibbonImageSize.Standard) where T : RibbonSplitButton
+        {
+            ribbonSplitButton.ListImageSize = listImageSize;
+            return ribbonSplitButton;
+        }
+
+        /// <summary>
+        /// Adds the specified ribbon items to the <see cref="RibbonListButton"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of ribbon list button.</typeparam>
+        /// <param name="ribbonListButton">The ribbon list button to extend.</param>
+        /// <param name="ribbonItems">The ribbon items to add.</param>
+        /// <returns>The ribbon list button with the items added.</returns>
+        public static T AddItems<T>(this T ribbonListButton, params RibbonItem[] ribbonItems) where T : RibbonListButton
+        {
+            return ribbonListButton.AddItems(null, ribbonItems);
+        }
+
+        /// <summary>
+        /// Adds the specified ribbon items to the <see cref="RibbonListButton"/> and removes them from the given <see cref="RibbonPanel"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of ribbon list button.</typeparam>
+        /// <param name="ribbonListButton">The ribbon list button to extend.</param>
+        /// <param name="ribbonPanel">The ribbon panel from which to remove the items.</param>
+        /// <param name="ribbonItems">The ribbon items to add to the list button.</param>
+        /// <returns>
+        /// The ribbon list button with the items added.
+        /// </returns>
+        public static T AddItems<T>(this T ribbonListButton, RibbonPanel ribbonPanel, params RibbonItem[] ribbonItems) where T : RibbonListButton
+        {
+            foreach (var ribbonItem in ribbonItems)
+            {
+                ribbonListButton.Items.Add(ribbonItem);
+                ribbonPanel.Remove(ribbonItem);
+            }
+            return ribbonListButton;
+        }
+
+        #endregion
     }
 }

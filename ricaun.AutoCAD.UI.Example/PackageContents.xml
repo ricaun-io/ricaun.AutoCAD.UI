@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="AutoCAD" Name="ricaun.AutoCAD.UI.Example" AppVersion="1.0.0" ProductType="Application" >
+<ApplicationPackage SchemaVersion="1.0" AutodeskProduct="AutoCAD" Name="ricaun.AutoCAD.UI.Example" AppVersion="0.0.0" ProductType="Application" >
   <CompanyDetails Name="ricaun" />
   <Components Description="AutoCAD 2021-2024">
     <RuntimeRequirements OS="Win64" Platform="AutoCAD*" SeriesMin="R24.0" SeriesMax="R24.9"/>
