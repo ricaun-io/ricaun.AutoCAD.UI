@@ -116,6 +116,18 @@ namespace ricaun.AutoCAD.UI.Example
             .SetLargeImage("Resources/Cube-Green-Light.tiff")
             .SetDescription("This is a PulldownButton");
 
+            ribbonPanel.AddSlideOut();
+            ribbonPanel.RowStackedItems(
+                ribbonPanel.CreateButton("1")
+                    .SetLargeImage("Resources/Cube-Grey-Light.tiff"),
+                ribbonPanel.CreateButton("2")
+                    .SetLargeImage("Resources/Cube-Grey-Light.tiff"),
+                ribbonPanel.CreateButton("3")
+                    .SetLargeImage("Resources/Cube-Grey-Light.tiff")
+            );
+
+            ribbonPanel.SetDialogLauncher(ribbonPanel.CreateButton("DialogLauncher").SetCommand(e => Windows.MessageBox.ShowMessage(e.Text)));
+
             ribbonControl.ActiveTab = ribbonPanel.Tab;
         }
         public override void OnShutdown(RibbonControl ribbonControl)

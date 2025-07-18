@@ -522,6 +522,45 @@ namespace ricaun.AutoCAD.UI
             return ribbonPanel;
         }
 
+        /// <summary>
+        /// Adds a slide-out (panel break) to the ribbon panel.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <returns>The ribbon panel with the slide-out added.</returns>
+        public static RibbonPanel AddSlideOut(this RibbonPanel ribbonPanel)
+        {
+            if (ribbonPanel is null) return ribbonPanel;
+            ribbonPanel.AddItem(new RibbonPanelBreak());
+            return ribbonPanel;
+        }
+
+        /// <summary>
+        /// Sets the dialog launcher for the specified <see cref="RibbonPanel"/>.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to set the dialog launcher for.</param>
+        /// <param name="ribbonItem">The <see cref="RibbonCommandItem"/> to use as the dialog launcher.</param>
+        /// <returns>The <see cref="RibbonPanel"/> with the dialog launcher set.</returns>
+        public static RibbonPanel SetDialogLauncher(this RibbonPanel ribbonPanel, RibbonCommandItem ribbonItem)
+        {
+            if (ribbonPanel is null) return ribbonPanel;
+            ribbonPanel.Source.DialogLauncher = ribbonItem;
+            ribbonPanel.Remove(ribbonItem);
+            return ribbonPanel;
+        }
+
+        /// <summary>
+        /// Gets the dialog launcher <see cref="RibbonCommandItem"/> for the specified <see cref="RibbonPanel"/>.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to retrieve the dialog launcher from.</param>
+        /// <returns>
+        /// The <see cref="RibbonCommandItem"/> set as the dialog launcher for the panel, or <c>null</c> if the panel is <c>null</c>.
+        /// </returns>
+        public static RibbonCommandItem GetDialogLauncher(this RibbonPanel ribbonPanel)
+        {
+            if (ribbonPanel is null) return null;
+            return ribbonPanel.Source.DialogLauncher;
+        }
+
         #region RibbonListButton
 
         /// <summary>
