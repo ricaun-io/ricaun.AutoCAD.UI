@@ -8,9 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Features
 - Support `AddSlideOut` extension.
 - Support `SetDialogLauncher` and `GetDialogLauncher` extensions.
+- Support `CreateToggleButton` extension.
 ### UI
 - Update `RibbonExtension` to support `AddSlideOut`.
 - Update `RibbonExtension` to support `SetDialogLauncher` and `GetDialogLauncher`.
+- Update `RibbonExtension` to support `CreateToggleButton`.
 
 ## [0.3.0] / 2025-07-15
 ### Features

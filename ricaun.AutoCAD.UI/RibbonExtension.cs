@@ -18,13 +18,28 @@ namespace ricaun.AutoCAD.UI
         /// <param name="ribbonPanel">The ribbon panel to extend.</param>
         /// <param name="name">The name and text of the button.</param>
         /// <returns>A new <see cref="RibbonButton"/> instance.</returns>
-        public static RibbonButton NewButton(this RibbonPanel ribbonPanel, string name)
+        public static RibbonButton NewButton(this RibbonPanel ribbonPanel, string name = null)
         {
-            return ribbonPanel.NewButton<RibbonButton>(name);
+            return NewButton<RibbonButton>(name);
         }
 
-        internal static T NewButton<T>(this RibbonPanel ribbonPanel, string name) where T : RibbonButton, new()
+        /// <summary>
+        /// Creates a new <see cref="RibbonButton"/> of the specified type <typeparamref name="T"/> with default settings and the specified name.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="RibbonButton"/> to create. Must have a parameterless constructor.</typeparam>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the button. Optional.</param>
+        /// <returns>A new instance of <typeparamref name="T"/>.</returns>
+        public static T NewButton<T>(this RibbonPanel ribbonPanel, string name = null) where T : RibbonButton, new()
         {
+            return NewButton<T>(name);
+        }
+
+        internal static T NewButton<T>(string name = null) where T : RibbonButton, new()
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                name = typeof(T).Name;
+
             var ribbonButton = new T
             {
                 Orientation = Orientation.Vertical,
@@ -39,38 +54,12 @@ namespace ricaun.AutoCAD.UI
         }
 
         /// <summary>
-        /// Creates a new <see cref="RibbonButton"/>, adds it to the panel, and assigns a command handler.
-        /// </summary>
-        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
-        /// <param name="name">The name and text of the button.</param>
-        /// <param name="command">The command to execute when the button is clicked.</param>
-        /// <returns>The created <see cref="RibbonButton"/>.</returns>
-        public static RibbonButton CreateButton(this RibbonPanel ribbonPanel, string name, Action<RibbonButton> command)
-        {
-            return ribbonPanel.CreateButton(name)
-                .SetCommand(command);
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="RibbonButton"/>, adds it to the panel, and assigns a command handler.
-        /// </summary>
-        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
-        /// <param name="name">The name and text of the button.</param>
-        /// <param name="command">The command to execute when the button is clicked.</param>
-        /// <returns>The created <see cref="RibbonButton"/>.</returns>
-        public static RibbonButton CreateButton(this RibbonPanel ribbonPanel, string name, Action command)
-        {
-            return ribbonPanel.CreateButton(name)
-                .SetCommand(command);
-        }
-
-        /// <summary>
         /// Creates a new <see cref="RibbonButton"/> and adds it to the panel.
         /// </summary>
         /// <param name="ribbonPanel">The ribbon panel to extend.</param>
         /// <param name="name">The name and text of the button.</param>
         /// <returns>The created <see cref="RibbonButton"/>.</returns>
-        public static RibbonButton CreateButton(this RibbonPanel ribbonPanel, string name)
+        public static RibbonButton CreateButton(this RibbonPanel ribbonPanel, string name = null)
         {
             var ribbonItem = ribbonPanel.NewButton(name);
             ribbonPanel.AddItem(ribbonItem);
@@ -125,19 +114,9 @@ namespace ricaun.AutoCAD.UI
         /// <param name="ribbonPanel">The ribbon panel source to extend.</param>
         /// <param name="name">The name and text of the button.</param>
         /// <returns>The created <see cref="RibbonButton"/>.</returns>
-        public static RibbonButton CreateButton(this RibbonPanelSource ribbonPanel, string name)
+        public static RibbonButton CreateButton(this RibbonPanelSource ribbonPanel, string name = null)
         {
-            RibbonButton ribbonButton = new RibbonButton
-            {
-                Orientation = Orientation.Vertical,
-                AllowInStatusBar = true,
-                Size = RibbonItemSize.Large,
-                ShowImage = true,
-                ShowText = true,
-                Name = name,
-                Text = name,
-            };
-
+            RibbonButton ribbonButton = NewButton<RibbonButton>(name);
             ribbonPanel.Items.Add(ribbonButton);
             return ribbonButton;
         }
@@ -604,9 +583,9 @@ namespace ricaun.AutoCAD.UI
         /// <param name="ribbonPanel">The ribbon panel to extend.</param>
         /// <param name="name">The name and text of the split button.</param>
         /// <returns>A new <see cref="RibbonSplitButton"/> instance.</returns>
-        public static RibbonSplitButton NewSplitButton(this RibbonPanel ribbonPanel, string name)
+        public static RibbonSplitButton NewSplitButton(this RibbonPanel ribbonPanel, string name = null)
         {
-            return ribbonPanel.NewButton<RibbonSplitButton>(name);
+            return NewButton<RibbonSplitButton>(name);
         }
 
         /// <summary>
@@ -618,7 +597,7 @@ namespace ricaun.AutoCAD.UI
         /// <remarks>
         /// Pulldown is a <see cref="RibbonSplitButton"/> that have <see cref="RibbonListButton.IsSplit"/> false and <see cref="RibbonListButton.IsSynchronizedWithCurrentItem"/> false.
         /// </remarks>
-        public static RibbonSplitButton NewPulldownButton(this RibbonPanel ribbonPanel, string name)
+        public static RibbonSplitButton NewPulldownButton(this RibbonPanel ribbonPanel, string name = null)
         {
             var pulldownButton = ribbonPanel.NewSplitButton(name);
             pulldownButton.IsSplit = false;
@@ -671,6 +650,21 @@ namespace ricaun.AutoCAD.UI
             return ribbonListButton;
         }
 
+        #endregion
+
+        #region ToggleButton
+        /// <summary>
+        /// Creates a new <see cref="RibbonToggleButton"/>, adds it to the panel, and returns it.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the toggle button. Optional.</param>
+        /// <returns>The created <see cref="RibbonToggleButton"/>.</returns>
+        public static RibbonToggleButton CreateToggleButton(this RibbonPanel ribbonPanel, string name = null)
+        {
+            var ribbonItem = NewButton<RibbonToggleButton>(name);
+            ribbonPanel.AddItem(ribbonItem);
+            return ribbonItem;
+        }
         #endregion
     }
 }
