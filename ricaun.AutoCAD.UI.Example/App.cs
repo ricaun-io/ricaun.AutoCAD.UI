@@ -116,6 +116,46 @@ namespace ricaun.AutoCAD.UI.Example
             .SetLargeImage("Resources/Cube-Green-Light.tiff")
             .SetDescription("This is a PulldownButton");
 
+            ribbonPanel.CreateToggleButton("Toggle")
+                .SetCommand(e => e.Text = $"{e.Name}\r{e.IsChecked}")
+                .SetLargeImage("Resources/Cube-Green-Light.tiff");
+
+            var label = ribbonPanel.CreateLabel()
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff");
+
+            var textBox = ribbonPanel.CreateTextBox()
+                    .SetLargeImage("Resources/Cube-Green-Light.tiff")
+                    .SetPrompt("Enter text here")
+                    .SetCommand(e => { label.Text = e.Value.ToString(); })
+                    .SetWidth(120);
+
+            var comboBox = ribbonPanel.CreateComboBox("ComboBox")
+                .SetLargeImage("Resources/Cube-Green-Light.tiff")
+                .SetCommandChanged(e => { label.Text = e.GetCurrentText(); })
+                .SetItems("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
+                .SetWidth(120);
+
+            comboBox.GetCurrentRibbon()
+                .SetLargeImage("Resources/Cube-Red-Light.tiff");
+
+            ribbonPanel.RowStackedItems(
+                label,
+                textBox,
+                comboBox
+            );
+
+            ribbonPanel.AddSlideOut();
+            ribbonPanel.RowStackedItems(
+                ribbonPanel.CreateButton("1")
+                    .SetLargeImage("Resources/Cube-Grey-Light.tiff"),
+                ribbonPanel.CreateButton("2")
+                    .SetLargeImage("Resources/Cube-Grey-Light.tiff"),
+                ribbonPanel.CreateButton("3")
+                    .SetLargeImage("Resources/Cube-Grey-Light.tiff")
+            );
+
+            ribbonPanel.SetDialogLauncher(ribbonPanel.CreateButton("DialogLauncher").SetCommand(e => Windows.MessageBox.ShowMessage(e.Text)));
+
             ribbonControl.ActiveTab = ribbonPanel.Tab;
         }
         public override void OnShutdown(RibbonControl ribbonControl)

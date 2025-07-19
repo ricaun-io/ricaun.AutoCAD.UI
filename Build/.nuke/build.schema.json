@@ -23,38 +23,45 @@
     },
     "IssConfiguration": {
       "type": "object",
+      "description": "IssConfiguration",
       "properties": {
         "Title": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "Title (default null)"
         },
         "Image": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "Image (default IMAGE)"
         },
         "ImageSmall": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "Small Image (default IMAGESMALL)"
         },
         "Icon": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "Icon (default ICON)"
         },
         "Licence": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "Licence (default LICENSE)"
         },
         "Language": {
+          "description": "Language (default IssLanguage)",
           "oneOf": [
             {
               "type": "null"
@@ -69,6 +76,7 @@
             "array",
             "null"
           ],
+          "description": "IssLanguages",
           "items": {
             "$ref": "#/definitions/IssLanguageLicence"
           }
@@ -77,41 +85,48 @@
     },
     "IssLanguage": {
       "type": "object",
+      "description": "IssLanguage",
       "properties": {
         "Name": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "Name (default \"en\")"
         },
         "MessagesFile": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "MessagesFile (default \"compiler:Default.isl\")"
         }
       }
     },
     "IssLanguageLicence": {
       "type": "object",
+      "description": "IssLanguageLicence",
       "properties": {
         "Name": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "Name (default \"en\")"
         },
         "MessagesFile": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "MessagesFile (default \"compiler:Default.isl\")"
         },
         "Licence": {
           "type": [
             "null",
             "string"
-          ]
+          ],
+          "description": "Licence (default LICENSE)"
         }
       }
     },

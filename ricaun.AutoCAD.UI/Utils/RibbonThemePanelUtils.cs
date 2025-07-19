@@ -101,12 +101,17 @@ namespace ricaun.AutoCAD.UI.Utils
                         foreach (var item in ribbonListButton.Items)
                             UpdateImageThemes(item, isLight);
                         break;
-                    case RibbonButton ribbonButton:
-                        UpdateRibbonItemTheme(ribbonButton);
-                        break;
                     case RibbonRowPanel ribbonRowPanel:
                         foreach (var item in ribbonRowPanel.Items)
                             UpdateImageThemes(item, isLight);
+                        break;
+                    case RibbonList ribbonList:
+                        UpdateRibbonItemTheme(ribbonList);
+                        foreach (var item in ribbonList.Items)
+                            UpdateImageThemes(item as RibbonItem, isLight);
+                        break;
+                    case RibbonItem ribbonButton:
+                        UpdateRibbonItemTheme(ribbonButton);
                         break;
                 }
             }
