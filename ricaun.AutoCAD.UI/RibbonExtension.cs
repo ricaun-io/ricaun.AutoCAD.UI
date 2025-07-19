@@ -2,6 +2,9 @@
 using ricaun.AutoCAD.UI.Input;
 using ricaun.AutoCAD.UI.Utils;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -824,6 +827,185 @@ namespace ricaun.AutoCAD.UI
             ribbonPanel.AddItem(ribbonItem);
             return ribbonItem;
         }
+        #endregion
+
+        #region ComboBox
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonCombo"/> with default settings and the specified name.
+        /// </summary>
+        /// <param name="name">The name and text of the combo box. Optional.</param>
+        /// <returns>A new <see cref="RibbonCombo"/> instance.</returns>
+        public static RibbonCombo NewComboBox(string name = null)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                name = nameof(RibbonCombo);
+
+            var comboBox = new RibbonCombo
+            {
+                Size = RibbonItemSize.Standard,
+                ShowImage = true,
+                Name = name,
+                Text = name,
+            };
+            return comboBox;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonCombo"/>, adds it to the specified <see cref="RibbonPanel"/>, and returns it.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the combo box. Optional.</param>
+        /// <returns>The created <see cref="RibbonCombo"/>.</returns>
+        public static RibbonCombo CreateComboBox(this RibbonPanel ribbonPanel, string name = null)
+        {
+            var ribbonItem = NewComboBox(name);
+            ribbonPanel.AddItem(ribbonItem);
+            return ribbonItem;
+        }
+
+        /// <summary>
+        /// Sets the width of the <see cref="RibbonCombo"/>.
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to extend.</param>
+        /// <param name="width">The width to set.</param>
+        /// <returns>The <see cref="RibbonCombo"/> with the updated width.</returns>
+        public static RibbonCombo SetWidth(this RibbonCombo comboBox, double width)
+        {
+            comboBox.Width = width;
+            return comboBox;
+        }
+
+        /// <summary>
+        /// Sets the items of the <see cref="RibbonCombo"/>. Accepts <see cref="RibbonItem"/>s or objects (converted to <see cref="RibbonTextBox"/>).
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to extend.</param>
+        /// <param name="items">The items to add to the combo box.</param>
+        /// <returns>The <see cref="RibbonCombo"/> with the items set.</returns>
+        public static RibbonCombo SetItems(this RibbonCombo comboBox, params object[] items)
+        {
+            if (comboBox is null)
+                return comboBox;
+
+            comboBox.Items.Clear();
+            foreach (var item in items)
+            {
+                if (item is RibbonItem ribbonItem)
+                    comboBox.Items.Add(ribbonItem);
+                else
+                    comboBox.Items.Add(NewTextBox(item?.ToString()));
+
+                if (comboBox.Current is null)
+                    comboBox.Current = comboBox.Items[0];
+            }
+            return comboBox;
+        }
+
+        /// <summary>
+        /// Gets the list of <see cref="RibbonItem"/>s contained in the <see cref="RibbonCombo"/>.
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to query.</param>
+        /// <returns>A list of <see cref="RibbonItem"/>s in the combo box.</returns>
+        public static IList<RibbonItem> GetItems(this RibbonCombo comboBox)
+        {
+            var list = new List<RibbonItem>();
+            if (comboBox is null) return list;
+            foreach (var item in comboBox.Items)
+            {
+                if (item is RibbonItem ribbonItem)
+                    list.Add(ribbonItem);
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Sets the current selected item of the <see cref="RibbonCombo"/>.
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to extend.</param>
+        /// <param name="current">The item to set as current.</param>
+        /// <returns>The <see cref="RibbonCombo"/> with the updated current item.</returns>
+        public static RibbonCombo SetCurrent(this RibbonCombo comboBox, object current)
+        {
+            comboBox.Current = current;
+            return comboBox;
+        }
+
+        /// <summary>
+        /// Gets the current selected <see cref="RibbonItem"/> from the <see cref="RibbonCombo"/>.
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to query.</param>
+        /// <returns>The current <see cref="RibbonItem"/>, or null if not set.</returns>
+        public static RibbonItem GetCurrentRibbon(this RibbonCombo comboBox)
+        {
+            return comboBox.Current as RibbonItem;
+        }
+
+        /// <summary>
+        /// Gets the text of the current selected <see cref="RibbonItem"/> in the <see cref="RibbonCombo"/>.
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to query.</param>
+        /// <returns>The text of the current item, or null if not set.</returns>
+        public static string GetCurrentText(this RibbonCombo comboBox)
+        {
+            return comboBox.GetCurrentRibbon()?.Text;
+        }
+
+        /// <summary>
+        /// Handles the <see cref="RibbonList.CurrentChanged"/> event and executes the assigned command handler.
+        /// </summary>
+        /// <param name="sender">The sender of the event (should be a <see cref="RibbonCombo"/>).</param>
+        /// <param name="e">The event arguments.</param>
+        private static void ComboBox_CurrentChanged(object sender, RibbonPropertyChangedEventArgs e)
+        {
+            try
+            {
+                if (sender is RibbonCombo comboBox)
+                {
+                    if (comboBox.CommandHandler is System.Windows.Input.ICommand command)
+                    {
+                        command.Execute(comboBox);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Sets the command to be executed when the current item of the <see cref="RibbonCombo"/> changes.
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to extend.</param>
+        /// <param name="command">The command to execute on current item change.</param>
+        /// <returns>The <see cref="RibbonCombo"/> with the command handler set.</returns>
+        public static RibbonCombo SetCommandChanged(this RibbonCombo comboBox, System.Windows.Input.ICommand command)
+        {
+            comboBox.CurrentChanged -= ComboBox_CurrentChanged;
+            comboBox.CurrentChanged += ComboBox_CurrentChanged;
+            comboBox.CommandHandler = command;
+            return comboBox;
+        }
+
+        /// <summary>
+        /// Sets the action to be executed when the current item of the <see cref="RibbonCombo"/> changes.
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to extend.</param>
+        /// <param name="command">The action to execute on current item change.</param>
+        /// <returns>The <see cref="RibbonCombo"/> with the command handler set.</returns>
+        public static RibbonCombo SetCommandChanged(this RibbonCombo comboBox, Action command)
+        {
+            return comboBox.SetCommandChanged(new LockDocumentRelayCommand(command));
+        }
+
+        /// <summary>
+        /// Sets the action to be executed with the <see cref="RibbonCombo"/> as a parameter when the current item changes.
+        /// </summary>
+        /// <param name="comboBox">The ribbon combo box to extend.</param>
+        /// <param name="command">The action to execute with the combo box as a parameter.</param>
+        /// <returns>The <see cref="RibbonCombo"/> with the command handler set.</returns>
+        public static RibbonCombo SetCommandChanged(this RibbonCombo comboBox, Action<RibbonCombo> command)
+        {
+            return comboBox.SetCommandChanged(new LockDocumentRelayCommand<RibbonCombo>(command));
+        }
+
         #endregion
     }
 }

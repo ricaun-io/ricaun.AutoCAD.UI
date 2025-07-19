@@ -121,7 +121,7 @@ namespace ricaun.AutoCAD.UI.Example
                 .SetLargeImage("Resources/Cube-Green-Light.tiff");
 
             var label = ribbonPanel.CreateLabel()
-                .SetLargeImage("Resources/Cube-Green-Light.tiff");
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
             var textBox = ribbonPanel.CreateTextBox()
                     .SetLargeImage("Resources/Cube-Green-Light.tiff")
@@ -129,9 +129,19 @@ namespace ricaun.AutoCAD.UI.Example
                     .SetCommand(e => { label.Text = e.Value.ToString(); })
                     .SetWidth(120);
 
+            var comboBox = ribbonPanel.CreateComboBox("ComboBox")
+                .SetLargeImage("Resources/Cube-Green-Light.tiff")
+                .SetCommandChanged(e => { label.Text = e.GetCurrentText(); })
+                .SetItems("Item 1", "Item 2", "Item 3", "Item 4", "Item 5")
+                .SetWidth(120);
+
+            comboBox.GetCurrentRibbon()
+                .SetLargeImage("Resources/Cube-Red-Light.tiff");
+
             ribbonPanel.RowStackedItems(
+                label,
                 textBox,
-                label
+                comboBox
             );
 
             ribbonPanel.AddSlideOut();
