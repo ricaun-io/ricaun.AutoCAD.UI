@@ -116,9 +116,23 @@ namespace ricaun.AutoCAD.UI.Example
             .SetLargeImage("Resources/Cube-Green-Light.tiff")
             .SetDescription("This is a PulldownButton");
 
-            var toggle = ribbonPanel.CreateToggleButton("Toggle")
+            ribbonPanel.CreateToggleButton("Toggle")
                 .SetCommand(e => e.Text = $"{e.Name}\r{e.IsChecked}")
                 .SetLargeImage("Resources/Cube-Green-Light.tiff");
+
+            var label = ribbonPanel.CreateLabel()
+                .SetLargeImage("Resources/Cube-Green-Light.tiff");
+
+            var textBox = ribbonPanel.CreateTextBox()
+                    .SetLargeImage("Resources/Cube-Green-Light.tiff")
+                    .SetPrompt("Enter text here")
+                    .SetCommand(e => { label.Text = e.Value.ToString(); })
+                    .SetWidth(120);
+
+            ribbonPanel.RowStackedItems(
+                textBox,
+                label
+            );
 
             ribbonPanel.AddSlideOut();
             ribbonPanel.RowStackedItems(

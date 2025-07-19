@@ -130,9 +130,7 @@ namespace ricaun.AutoCAD.UI
         /// <returns>The ribbon item with the command handler set.</returns>
         public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, System.Windows.Input.ICommand command) where TRibbonItem : RibbonCommandItem
         {
-            if (command is not null)
-                ribbonItem.CommandHandler = command;
-
+            ribbonItem.CommandHandler = command;
             return ribbonItem;
         }
 
@@ -145,10 +143,7 @@ namespace ricaun.AutoCAD.UI
         /// <returns>The ribbon item.</returns>
         public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, Action command) where TRibbonItem : RibbonCommandItem
         {
-            if (command is not null)
-                ribbonItem.CommandHandler = new LockDocumentRelayCommand(command);
-
-            return ribbonItem;
+            return ribbonItem.SetCommand(new LockDocumentRelayCommand(command));
         }
 
         /// <summary>
@@ -160,10 +155,7 @@ namespace ricaun.AutoCAD.UI
         /// <returns>The ribbon item.</returns>
         public static TRibbonItem SetCommand<TRibbonItem>(this TRibbonItem ribbonItem, Action<TRibbonItem> command) where TRibbonItem : RibbonCommandItem
         {
-            if (command is not null)
-                ribbonItem.CommandHandler = new LockDocumentRelayCommand<TRibbonItem>(command);
-
-            return ribbonItem;
+            return ribbonItem.SetCommand(new LockDocumentRelayCommand<TRibbonItem>(command));
         }
 
         /// <summary>
@@ -177,6 +169,7 @@ namespace ricaun.AutoCAD.UI
         {
             if (!string.IsNullOrEmpty(value))
             {
+                ribbonItem.ShowText = true;
                 ribbonItem.Text = value;
                 if (ribbonItem.ToolTip is RibbonToolTip toolTip) toolTip.Title = value;
             }
@@ -662,6 +655,172 @@ namespace ricaun.AutoCAD.UI
         public static RibbonToggleButton CreateToggleButton(this RibbonPanel ribbonPanel, string name = null)
         {
             var ribbonItem = NewButton<RibbonToggleButton>(name);
+            ribbonPanel.AddItem(ribbonItem);
+            return ribbonItem;
+        }
+        #endregion
+
+        #region TextBox
+        /// <summary>
+        /// Creates a new <see cref="RibbonTextBox"/> with default settings and the specified name.
+        /// </summary>
+        /// <param name="name">The name and text of the text box. Optional.</param>
+        /// <returns>A new <see cref="RibbonTextBox"/> instance.</returns>
+        public static RibbonTextBox NewTextBox(string name = null)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                name = nameof(RibbonTextBox);
+
+            var ribbonTextBox = new RibbonTextBox
+            {
+                Size = RibbonItemSize.Standard,
+                ShowImage = true,
+                Name = name,
+                Text = name,
+            };
+            return ribbonTextBox;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonTextBox"/>, adds it to the specified <see cref="RibbonPanel"/>, and returns it.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the text box. Optional.</param>
+        /// <returns>The created <see cref="RibbonTextBox"/>.</returns>
+        public static RibbonTextBox CreateTextBox(this RibbonPanel ribbonPanel, string name = null)
+        {
+            var ribbonItem = NewTextBox(name);
+            ribbonPanel.AddItem(ribbonItem);
+            return ribbonItem;
+        }
+
+        /// <summary>
+        /// Sets whether the <see cref="RibbonTextBox"/> should display its image as a button.
+        /// </summary>
+        /// <param name="textBox">The ribbon text box to extend.</param>
+        /// <param name="showImageAsButton">Whether to show the image as a button. Default is <c>true</c>.</param>
+        /// <returns>The <see cref="RibbonTextBox"/> with the updated setting.</returns>
+        public static RibbonTextBox SetShowImageAsButton(this RibbonTextBox textBox, bool showImageAsButton = true)
+        {
+            textBox.ShowImageAsButton = showImageAsButton;
+            return textBox;
+        }
+
+        /// <summary>
+        /// Sets whether the text in the <see cref="RibbonTextBox"/> should be selected when it receives focus.
+        /// </summary>
+        /// <param name="textBox">The ribbon text box to extend.</param>
+        /// <param name="selectTextOnFocus">Whether to select text on focus. Default is <c>true</c>.</param>
+        /// <returns>The <see cref="RibbonTextBox"/> with the updated setting.</returns>
+        public static RibbonTextBox SetSelectTextOnFocus(this RibbonTextBox textBox, bool selectTextOnFocus = true)
+        {
+            textBox.SelectTextOnFocus = selectTextOnFocus;
+            return textBox;
+        }
+
+        /// <summary>
+        /// Sets the prompt text for the <see cref="RibbonTextBox"/>.
+        /// </summary>
+        /// <param name="textBox">The ribbon text box to extend.</param>
+        /// <param name="prompt">The prompt text to display.</param>
+        /// <returns>The <see cref="RibbonTextBox"/> with the updated prompt.</returns>
+        public static RibbonTextBox SetPrompt(this RibbonTextBox textBox, string prompt)
+        {
+            textBox.Prompt = prompt;
+            return textBox;
+        }
+
+        /// <summary>
+        /// Sets the width of the <see cref="RibbonTextBox"/>.
+        /// </summary>
+        /// <param name="textBox">The ribbon text box to extend.</param>
+        /// <param name="width">The width to set.</param>
+        /// <returns>The <see cref="RibbonTextBox"/> with the updated width.</returns>
+        public static RibbonTextBox SetWidth(this RibbonTextBox textBox, double width)
+        {
+            textBox.Width = width;
+            return textBox;
+        }
+
+        /// <summary>
+        /// Sets the value of the <see cref="RibbonTextBox"/>.
+        /// </summary>
+        /// <param name="textBox">The ribbon text box to extend.</param>
+        /// <param name="value">The value to set. Optional.</param>
+        /// <returns>The <see cref="RibbonTextBox"/> with the updated value.</returns>
+        public static RibbonTextBox SetValue(this RibbonTextBox textBox, object value = null)
+        {
+            textBox.Value = value;
+            return textBox;
+        }
+
+        /// <summary>
+        /// Sets the command handler for the <see cref="RibbonTextBox"/> using an <see cref="System.Windows.Input.ICommand"/>.
+        /// </summary>
+        /// <param name="textBox">The ribbon text box to extend.</param>
+        /// <param name="command">The command to assign as the handler.</param>
+        /// <returns>The <see cref="RibbonTextBox"/> with the command handler set.</returns>
+        public static RibbonTextBox SetCommand(this RibbonTextBox textBox, System.Windows.Input.ICommand command)
+        {
+            textBox.InvokesCommand = true;
+            textBox.CommandHandler = command;
+            return textBox;
+        }
+
+        /// <summary>
+        /// Sets the command handler for the <see cref="RibbonTextBox"/> using an <see cref="Action"/>.
+        /// </summary>
+        /// <param name="textBox">The ribbon text box to extend.</param>
+        /// <param name="command">The action to execute.</param>
+        /// <returns>The <see cref="RibbonTextBox"/> with the command handler set.</returns>
+        public static RibbonTextBox SetCommand(this RibbonTextBox textBox, Action command)
+        {
+            return textBox.SetCommand(new LockDocumentRelayCommand(command));
+        }
+
+        /// <summary>
+        /// Sets the command handler for the <see cref="RibbonTextBox"/> using an <see cref="Action{RibbonTextBox}"/>.
+        /// </summary>
+        /// <param name="textBox">The ribbon text box to extend.</param>
+        /// <param name="command">The action to execute with the <see cref="RibbonTextBox"/> as a parameter.</param>
+        /// <returns>The <see cref="RibbonTextBox"/> with the command handler set.</returns>
+        public static RibbonTextBox SetCommand(this RibbonTextBox textBox, Action<RibbonTextBox> command)
+        {
+            return textBox.SetCommand(new LockDocumentRelayCommand<RibbonTextBox>(command));
+        }
+
+        #endregion
+
+        #region Label
+        /// <summary>
+        /// Creates a new <see cref="RibbonLabel"/> with default settings and the specified name.
+        /// </summary>
+        /// <param name="name">The name and text of the label. Optional.</param>
+        /// <returns>A new <see cref="RibbonLabel"/> instance.</returns>
+        public static RibbonLabel NewLabel(string name = null)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                name = nameof(RibbonLabel);
+
+            var label = new RibbonLabel
+            {
+                Size = RibbonItemSize.Standard,
+                ShowImage = true,
+                Name = name,
+                Text = name,
+            };
+            return label;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="RibbonLabel"/>, adds it to the specified <see cref="RibbonPanel"/>, and returns it.
+        /// </summary>
+        /// <param name="ribbonPanel">The ribbon panel to extend.</param>
+        /// <param name="name">The name and text of the label. Optional.</param>
+        /// <returns>The created <see cref="RibbonLabel"/>.</returns>
+        public static RibbonLabel CreateLabel(this RibbonPanel ribbonPanel, string name = null)
+        {
+            var ribbonItem = NewLabel(name);
             ribbonPanel.AddItem(ribbonItem);
             return ribbonItem;
         }
