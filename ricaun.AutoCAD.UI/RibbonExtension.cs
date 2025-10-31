@@ -162,7 +162,7 @@ namespace ricaun.AutoCAD.UI
         }
 
         /// <summary>
-        /// Sets the text of a ribbon item and updates its tooltip title.
+        /// Sets the text of a ribbon item and updates to show the text.
         /// </summary>
         /// <typeparam name="TRibbonItem">The type of ribbon item.</typeparam>
         /// <param name="ribbonItem">The ribbon item to extend.</param>
@@ -174,11 +174,27 @@ namespace ricaun.AutoCAD.UI
             {
                 ribbonItem.ShowText = true;
                 ribbonItem.Text = value;
-                if (ribbonItem.ToolTip is RibbonToolTip toolTip) toolTip.Title = value;
             }
             else
             {
                 ribbonItem.ShowText = false;
+            }
+            return ribbonItem;
+        }
+
+        /// <summary>
+        /// Sets the name of a ribbon item and updates its tooltip title.
+        /// </summary>
+        /// <typeparam name="TRibbonItem">The type of ribbon item.</typeparam>
+        /// <param name="ribbonItem">The ribbon item to extend.</param>
+        /// <param name="value">The name value to set.</param>
+        /// <returns>The ribbon item with the updated name.</returns>
+        public static TRibbonItem SetName<TRibbonItem>(this TRibbonItem ribbonItem, string value) where TRibbonItem : RibbonItem
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                ribbonItem.Name = value;
+                if (ribbonItem.ToolTip is RibbonToolTip toolTip) toolTip.Title = value; 
             }
             return ribbonItem;
         }
@@ -252,7 +268,7 @@ namespace ricaun.AutoCAD.UI
             {
                 ribbonItem.ToolTip = new RibbonToolTip()
                 {
-                    Title = ribbonItem.Text,
+                    Title = ribbonItem.Name,
                     Content = ribbonItem.Description
                 };
             }

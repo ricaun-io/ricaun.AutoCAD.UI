@@ -88,33 +88,46 @@ namespace ricaun.AutoCAD.UI.Example
                 .SetCommand(() => { paletteSet?.ToggleVisible(); })
                 .SetLargeImage("Resources/Cube-Grey-Light.tiff");
 
+            ribbonPanel.CreateButton("Button Name")
+                .SetLargeImage("Resources/Cube-Grey-Light.tiff")
+                .SetText("Button Text")
+                .SetDescription("This is a Description")
+                .SetToolTip("This is a ToolTip");
+
             ribbonPanel.AddSeparator();
 
             ribbonPanel.CreateSplitButton("Split", 
-                ribbonPanel.CreateButton("Grey")
+                ribbonPanel.CreateButton("Grey\rName")
+                    .SetText("Grey\rText")
                     .SetCommand(e=>Windows.MessageBox.ShowMessage(e.Text))
                     .SetLargeImage("Resources/Cube-Grey-Light.tiff"),
-                ribbonPanel.CreateButton("Red")
+                ribbonPanel.CreateButton("Red\rName")
+                    .SetText("Red\rText")
                     .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
                     .SetLargeImage("Resources/Cube-Red-Light.tiff"),
-                ribbonPanel.CreateButton("Green")
+                ribbonPanel.CreateButton("Green\rName")
+                    .SetText("Green\rText")
                     .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
                     .SetLargeImage("Resources/Cube-Green-Light.tiff")
             );
 
             ribbonPanel.CreatePulldownButton("Pulldown",
                 ribbonPanel.CreateButton("Grey")
+                    .SetText("Grey Text")
                     .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
                     .SetLargeImage("Resources/Cube-Grey-Light.tiff"),
                 ribbonPanel.CreateButton("Red")
+                    .SetText("Red Text")
                     .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
                     .SetLargeImage("Resources/Cube-Red-Light.tiff"),
                 ribbonPanel.CreateButton("Green")
+                    .SetText("Green Text")
                     .SetCommand(e => Windows.MessageBox.ShowMessage(e.Text))
                     .SetLargeImage("Resources/Cube-Green-Light.tiff")
             )
             .SetLargeImage("Resources/Cube-Green-Light.tiff")
-            .SetDescription("This is a PulldownButton");
+            .SetDescription("This is a PulldownButton")
+            .SetText("Pulldown Text");
 
             ribbonPanel.CreateToggleButton("Toggle")
                 .SetCommand(e => e.Text = $"{e.Name}\r{e.IsChecked}")
