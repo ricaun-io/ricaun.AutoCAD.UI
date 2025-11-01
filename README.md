@@ -37,6 +37,52 @@ public class MyExtensionApp : ExtensionApplication
 }
 ```
 
+### RibbonExtension
+
+The `RibbonExtension` class offers extension methods to create and manage ribbon panels, buttons, and other UI elements in AutoCAD.
+```C#
+using ricaun.AutoCAD.UI;
+using Autodesk.AutoCAD.Runtime;
+
+[assembly: ExtensionApplication(MyExtensionApp)]
+
+public class MyExtensionApp : ExtensionApplication
+{
+    public override void OnStartup(RibbonControl ribbonControl)
+    {
+        var ribbonPanel = ribbonControl.CreatePanel("MyPanel");
+
+        ribbonPanel.CreateButton("MyButton")
+            .SetText("Click Me")
+            .SetDescription("This is a button description")
+            .SetToolTip("This is a button tooltip")
+            .SetImage("Resources/image16-light.png")
+            .SetLargeImage("Resources/image32-light.png")
+            .SetCommand(() => 
+            {
+                // Button click logic here
+            });
+    }
+
+    public override void OnShutdown(RibbonControl ribbonControl)
+    {
+        ribbonControl.RemovePanel("MyPanel");
+    }
+}
+```
+
+### Ribbon Image - Theme Change Support
+
+The `SetImage` and `SetLargeImage` methods automatically handle theme changes based in the key name `light` and `dark` in the image file names.
+
+```C#
+ribbonPanel.CreateButton("MyButton")
+    .SetImage("Resources/image16-light.png") // If the theme is dark, it will use "Resources/image16-dark.png" internally
+    .SetLargeImage("Resources/image32-light.png"); // If the theme is dark, it will use "Resources/image32-dark.png" internally
+```
+
+When the AutoCAD theme changes, the ribbon button images will automatically update to match the current theme.
+
 ## Release
 
 * [Latest release](https://github.com/ricaun-io/ricaun.AutoCAD.UI/releases/latest)
