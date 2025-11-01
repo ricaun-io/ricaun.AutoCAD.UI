@@ -2,9 +2,7 @@
 using ricaun.AutoCAD.UI.Input;
 using ricaun.AutoCAD.UI.Utils;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -162,23 +160,45 @@ namespace ricaun.AutoCAD.UI
         }
 
         /// <summary>
-        /// Sets the text of a ribbon item and updates its tooltip title.
+        /// Sets the text of a ribbon item and updates to show the text.
         /// </summary>
         /// <typeparam name="TRibbonItem">The type of ribbon item.</typeparam>
         /// <param name="ribbonItem">The ribbon item to extend.</param>
         /// <param name="value">The text value to set.</param>
         /// <returns>The ribbon item.</returns>
+        /// <remarks>
+        /// The Name and Text properties are used to store long and short names for the item. Text is used in the item in the ribbon and Name is used in customization dialog.
+        /// </remarks>
         public static TRibbonItem SetText<TRibbonItem>(this TRibbonItem ribbonItem, string value) where TRibbonItem : RibbonItem
         {
             if (!string.IsNullOrEmpty(value))
             {
                 ribbonItem.ShowText = true;
                 ribbonItem.Text = value;
-                if (ribbonItem.ToolTip is RibbonToolTip toolTip) toolTip.Title = value;
             }
             else
             {
                 ribbonItem.ShowText = false;
+            }
+            return ribbonItem;
+        }
+
+        /// <summary>
+        /// Sets the name of a ribbon item and updates its tooltip title.
+        /// </summary>
+        /// <typeparam name="TRibbonItem">The type of ribbon item.</typeparam>
+        /// <param name="ribbonItem">The ribbon item to extend.</param>
+        /// <param name="value">The name value to set.</param>
+        /// <returns>The ribbon item with the updated name.</returns>
+        /// <remarks>
+        /// The Name and Text properties are used to store long and short names for the item. Text is used in the item in the ribbon and Name is used in customization dialog.
+        /// </remarks>
+        public static TRibbonItem SetName<TRibbonItem>(this TRibbonItem ribbonItem, string value) where TRibbonItem : RibbonItem
+        {
+            if (!string.IsNullOrEmpty(value))
+            {
+                ribbonItem.Name = value;
+                if (ribbonItem.ToolTip is RibbonToolTip toolTip) toolTip.Title = value; 
             }
             return ribbonItem;
         }
@@ -252,7 +272,7 @@ namespace ricaun.AutoCAD.UI
             {
                 ribbonItem.ToolTip = new RibbonToolTip()
                 {
-                    Title = ribbonItem.Text,
+                    Title = ribbonItem.Name,
                     Content = ribbonItem.Description
                 };
             }

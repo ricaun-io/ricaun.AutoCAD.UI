@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.4.1] / 2025-10-31
+### Features
+- Add `SetName` to set the name of a ribbon item and update the `ToolTip` title.
+### Fixes
+- Fix `Name` should be used in the `ToolTip.Title` (Fix #5)
+
 ## [0.4.0] / 2025-07-18
 ### Features
 - Support `AddSlideOut` extension.
@@ -62,6 +68,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Add `Busy`, `Runtime`, `Tasks`, and `Windows` utilities.
 
 [vNext]: ../../compare/1.0.0...HEAD
+[0.4.1]: ../../compare/0.4.0...0.4.1
 [0.4.0]: ../../compare/0.3.0...0.4.0
 [0.3.0]: ../../compare/0.2.0...0.3.0
 [0.2.0]: ../../compare/0.1.0...0.2.0
