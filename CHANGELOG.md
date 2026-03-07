@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [0.5.0] / 2026-03-07
 ### Features
+- Remove `RibbonPanel` also remove `RibbonTab` when empty.
 ### Updates
 - Update `PackUri` and remove `AssemblyResourceUtils` implementation.
 
