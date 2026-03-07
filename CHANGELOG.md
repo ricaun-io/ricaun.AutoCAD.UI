@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Remove `RibbonPanel` also remove `RibbonTab` when empty.
 ### Updates
 - Update `PackUri` and remove `AssemblyResourceUtils` implementation.
+- Update `nupkg` configuration with license, tags and icon.
 
 ## [0.4.1] / 2025-10-31
 ### Features
