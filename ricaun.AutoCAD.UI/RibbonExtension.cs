@@ -91,6 +91,7 @@ namespace ricaun.AutoCAD.UI
             if (ribbonPanel.Tab?.Panels.Remove(ribbonPanel) == true)
             {
                 ribbonPanel.ThemeChangeDisable();
+                ribbonPanel.Tab?.RemoveWhenEmpty();
             }
             return ribbonPanel;
         }
@@ -489,6 +490,15 @@ namespace ricaun.AutoCAD.UI
             var ribbonControl = ComponentManager.Ribbon;
             if (ribbonControl is null) return;
             ribbonControl.Tabs.Remove(ribbonTab);
+        }
+
+        internal static void RemoveWhenEmpty(this RibbonTab ribbonTab)
+        {
+            if (ribbonTab is null) return;
+            if (ribbonTab.Panels.Count == 0)
+            {
+                ribbonTab.Remove();
+            }
         }
 
         /// <summary>
